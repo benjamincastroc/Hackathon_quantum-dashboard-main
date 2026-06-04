@@ -170,7 +170,7 @@ export default function AIChatAssistant() {
             <Sparkles className="w-4 h-4 text-white" />
           </div>
           <div>
-            <h2 className="text-sm font-bold text-white">GovWatch AI Assistant</h2>
+            <h2 className="text-sm font-bold text-white">GovAI Assistant</h2>
             <p className="text-[10px] text-slate-500">Autonomous anti-corruption auditor</p>
           </div>
         </div>

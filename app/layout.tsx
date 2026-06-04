@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "GovWatch AI — Anti-Corruption Intelligence Platform",
+  title: "GovAI — Anti-Corruption Intelligence Platform",
   description:
     "Autonomous AI-powered anti-corruption monitoring for governments, auditors, and transparency organizations.",
 };

@@ -196,7 +196,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           {showLabels && (
             <>
               <div className="min-w-0 text-left">
-                <p className="text-xs font-semibold text-slate-300 truncate">Ana García</p>
+                <p className="text-xs font-semibold text-slate-300 truncate">Benjamin Castro</p>
                 <p className="text-[10px] text-slate-500 truncate">Chief Auditor</p>
               </div>
               <LogOut className="w-3.5 h-3.5 text-slate-600 group-hover:text-slate-400 ml-auto flex-shrink-0" />
