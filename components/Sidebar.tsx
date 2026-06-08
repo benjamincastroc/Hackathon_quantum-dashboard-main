@@ -1,5 +1,5 @@
 "use client";
-
+ 
 import { useState } from "react";
 import {
   LayoutDashboard,
@@ -21,52 +21,45 @@ import {
   LogOut,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-
-const navItems = [
-  { icon: LayoutDashboard, label: "Dashboard", href: "#dashboard" },
-  { icon: FolderOpen,      label: "Projects",  href: "#projects",   badge: "124" },
-  { icon: FileText,        label: "Contracts", href: "#contracts" },
-  { icon: Building2,       label: "Suppliers", href: "#suppliers" },
-  { icon: CreditCard,      label: "Payments",  href: "#payments" },
-  { icon: ShieldAlert,     label: "Risk Analysis", href: "#risk" },
-  { icon: Link2,           label: "Blockchain",    href: "#blockchain" },
-  { icon: ClipboardList,   label: "Audit Reports", href: "#reports" },
-  { icon: Bot,             label: "Autonomous Agent", href: "#agent" },
-  { icon: Bell,            label: "Alerts",    href: "#alerts", badge: "3", badgeDanger: true },
-  { icon: Settings,        label: "Settings",  href: "#settings" },
+ 
+export const navItems = [
+  { icon: LayoutDashboard, label: "Dashboard",        section: "dashboard" },
+  { icon: FolderOpen,      label: "Projects",         section: "projects",   badge: "124" },
+  { icon: FileText,        label: "Contracts",        section: "contracts" },
+  { icon: Building2,       label: "Suppliers",        section: "suppliers" },
+  { icon: CreditCard,      label: "Payments",         section: "payments" },
+  { icon: ShieldAlert,     label: "Risk Analysis",    section: "risk" },
+  { icon: Link2,           label: "Blockchain",       section: "blockchain" },
+  { icon: ClipboardList,   label: "Audit Reports",    section: "reports" },
+  { icon: Bot,             label: "Autonomous Agent", section: "agent" },
+  { icon: Bell,            label: "Alerts",           section: "alerts",   badge: "3", badgeDanger: true },
+  { icon: Settings,        label: "Settings",         section: "settings" },
 ];
-
+ 
 interface SidebarProps {
   isOpen: boolean;
   onClose: () => void;
+  activeSection: string;
+  onSectionChange: (section: string) => void;
 }
-
-export default function Sidebar({ isOpen, onClose }: SidebarProps) {
-  const [active, setActive] = useState("Dashboard");
+ 
+export default function Sidebar({ isOpen, onClose, activeSection, onSectionChange }: SidebarProps) {
   const [collapsed, setCollapsed] = useState(false);
-
-  const handleNavClick = (label: string) => {
-    setActive(label);
-    // Close drawer on mobile after nav click
+ 
+  const handleNavClick = (section: string) => {
+    onSectionChange(section);
     onClose();
   };
-
-  // On desktop (lg+) collapsed state drives width.
-  // On mobile the sidebar is a fixed overlay driven by isOpen.
+ 
   const showLabels = !collapsed;
-
+ 
   return (
     <aside
       className={cn(
-        // Base
         "flex flex-col h-screen bg-[#0a0c18] border-r border-blue-500/10 transition-all duration-300 z-50",
-        // Mobile: fixed overlay, slides in/out
         "fixed inset-y-0 left-0",
-        // Desktop: static, part of flex layout
         "lg:relative lg:translate-x-0 lg:flex-shrink-0",
-        // Open/close on mobile
         isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0",
-        // Width
         collapsed ? "lg:w-[64px] w-[260px]" : "w-[260px]"
       )}
     >
@@ -78,7 +71,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           </div>
           <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-400 rounded-full border-2 border-[#0a0c18]" />
         </div>
-
+ 
         {showLabels && (
           <div className="min-w-0 flex-1">
             <p className="text-sm font-bold text-white leading-none tracking-tight">GovWatch AI</p>
@@ -87,8 +80,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             </p>
           </div>
         )}
-
-        {/* Collapse toggle — desktop only */}
+ 
         <button
           onClick={() => setCollapsed(!collapsed)}
           className={cn(
@@ -102,7 +94,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           />
         </button>
       </div>
-
+ 
       {/* ── Agent status pill ────────────────────────────── */}
       {showLabels && (
         <div className="mx-3 mt-3 px-3 py-2 rounded-lg bg-blue-500/8 border border-blue-500/15 flex items-center gap-2">
@@ -114,16 +106,16 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           <span className="ml-auto text-[10px] text-slate-500">92% conf.</span>
         </div>
       )}
-
+ 
       {/* ── Navigation ───────────────────────────────────── */}
       <nav className="flex-1 px-2 py-3 space-y-0.5 overflow-y-auto">
         {navItems.map((item) => {
           const Icon = item.icon;
-          const isActive = active === item.label;
+          const isActive = activeSection === item.section;
           return (
             <button
               key={item.label}
-              onClick={() => handleNavClick(item.label)}
+              onClick={() => handleNavClick(item.section)}
               className={cn(
                 "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-150 group",
                 isActive
@@ -163,10 +155,9 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           );
         })}
       </nav>
-
+ 
       {/* ── Bottom section ───────────────────────────────── */}
       <div className="border-t border-blue-500/10 p-2 space-y-1">
-        {/* Pro plan badge */}
         {showLabels && (
           <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/15 mb-2">
             <Crown className="w-3.5 h-3.5 text-yellow-400 flex-shrink-0" />
@@ -177,8 +168,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             <Zap className="w-3 h-3 text-yellow-400 ml-auto flex-shrink-0" />
           </div>
         )}
-
-        {/* Organization */}
+ 
         {showLabels && (
           <div className="px-3 py-1">
             <p className="text-[10px] text-slate-600 uppercase tracking-wider font-semibold">
@@ -187,8 +177,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             <p className="text-xs text-slate-400 mt-0.5 font-medium">National Audit Office</p>
           </div>
         )}
-
-        {/* User row */}
+ 
         <button className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/5 transition-colors group">
           <div className="w-7 h-7 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center flex-shrink-0">
             <User className="w-3.5 h-3.5 text-white" />
