@@ -7,7 +7,7 @@ import KPICards from "@/components/KPICards";
 import RiskAnalytics from "@/components/RiskAnalytics";
 import ProjectsTable from "@/components/ProjectsTable";
 import AnomaliesPanel from "@/components/AnomaliesPanel";
-import BlockchainPanel from "@/components/BlockchainPanel";
+const BlockchainPanel = dynamic(() => import("@/components/BlockchainPanel"), { ssr: false });
 import AutonomousAgent from "@/components/AutonomousAgent";
 import AIChatAssistant from "@/components/AIChatAssistant";
 import AgentTreasury from "@/components/AgentTreasury";
@@ -17,6 +17,7 @@ import SuppliersPanel from "@/components/SuppliersPanel";
 import PaymentsPanel from "@/components/PaymentsPanel";
 import AlertsPanel from "@/components/AlertsPanel";
 import SettingsPanel from "@/components/SettingsPanel";
+import dynamic from "next/dist/shared/lib/dynamic";
  
 interface TopBarProps {
   sidebarOpen: boolean;

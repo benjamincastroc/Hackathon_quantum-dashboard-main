@@ -3,6 +3,7 @@
 import { Link2, CheckCircle2, AlertCircle, Clock, ExternalLink } from "lucide-react";
 import { blockchainRecords } from "@/lib/data";
 import { formatCurrency } from "@/lib/utils";
+import dynamic from "next/dynamic";
 
 const statusConfig = {
   Verified: {
