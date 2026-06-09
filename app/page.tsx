@@ -42,7 +42,7 @@ function TopBar({ sidebarOpen, onMenuToggle, activeSection }: TopBarProps) {
           <span className="text-xs text-slate-500 hidden sm:block">/</span>
           <span className="text-xs font-semibold text-white">{sectionLabel}</span>
           <span className="text-[10px] text-slate-600 ml-1 hidden md:block">
-            Last updated: 2 min ago
+            Última actualización: hace 2 min
           </span>
         </div>
       </div>
@@ -50,7 +50,7 @@ function TopBar({ sidebarOpen, onMenuToggle, activeSection }: TopBarProps) {
       <div className="flex items-center gap-1.5 sm:gap-2">
         <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs text-slate-500 hover:border-white/20 transition-colors cursor-pointer w-44">
           <Search className="w-3.5 h-3.5 flex-shrink-0" />
-          <span className="truncate">Search platform...</span>
+          <span className="truncate">Buscar plataforma...</span>
           <kbd className="ml-auto text-[10px] bg-white/10 px-1.5 py-0.5 rounded font-mono">⌘K</kbd>
         </div>
         <button className="md:hidden p-1.5 rounded-lg hover:bg-white/10 transition-colors text-slate-500 hover:text-slate-300">
@@ -68,7 +68,7 @@ function TopBar({ sidebarOpen, onMenuToggle, activeSection }: TopBarProps) {
             <span className="ping-ring absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
             <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400" />
           </span>
-          <span className="text-[10px] font-semibold text-emerald-400">LIVE</span>
+          <span className="text-[10px] font-semibold text-emerald-400">EN VIVO</span>
         </div>
       </div>
     </header>
@@ -83,11 +83,11 @@ function SectionContent({ section }: { section: string }) {
         <>
           <div className="animate-enter">
             <h1 className="text-lg sm:text-xl font-bold text-white leading-tight">
-              GovAnti-Corruption Solutions
-              <span className="gradient-text-blue ml-2">AI</span>
+              Soluciones Anticorrupción GovAI
+              <span className="gradient-text-blue ml-2">IA</span>
             </h1>
             <p className="text-xs text-slate-500 mt-0.5">
-              Autonomous monitoring — 124 projects · $38.4M audited · Q1 2024
+              Monitoreo autónomo — 124 proyectos · $38.4M auditados · Q1 2024
             </p>
           </div>
           <KPICards />
@@ -109,8 +109,8 @@ function SectionContent({ section }: { section: string }) {
       return (
         <>
           <div className="animate-enter">
-            <h1 className="text-lg sm:text-xl font-bold text-white">Projects</h1>
-            <p className="text-xs text-slate-500 mt-0.5">124 active projects under monitoring</p>
+            <h1 className="text-lg sm:text-xl font-bold text-white">Proyectos</h1>
+            <p className="text-xs text-slate-500 mt-0.5">124 proyectos activos bajo monitoreo</p>
           </div>
           <KPICards />
           <ProjectsTable />
@@ -126,8 +126,8 @@ function SectionContent({ section }: { section: string }) {
       return (
         <>
           <div className="animate-enter">
-            <h1 className="text-lg sm:text-xl font-bold text-white">Risk Analysis</h1>
-            <p className="text-xs text-slate-500 mt-0.5">AI-powered risk scoring and anomaly detection</p>
+            <h1 className="text-lg sm:text-xl font-bold text-white">Análisis de Riesgo</h1>
+            <p className="text-xs text-slate-500 mt-0.5">Evaluación de riesgo integral para todos los proyectos monitoreados</p>
           </div>
           <RiskAnalytics />
           <AnomaliesPanel />

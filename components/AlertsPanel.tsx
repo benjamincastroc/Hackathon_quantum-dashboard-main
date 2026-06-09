@@ -2,11 +2,11 @@
 import { Bell, AlertTriangle, Info, XCircle } from "lucide-react";
  
 const alerts = [
-  { id: 1, title: "Anomalous payment detected", desc: "MedSupply Inc — $92,400 exceeds contract ceiling by 18%", time: "2 min ago", severity: "critical", read: false },
-  { id: 2, title: "Supplier compliance drop", desc: "MedSupply Inc score fell from 78% to 62% in last 30 days", time: "14 min ago", severity: "high", read: false },
-  { id: 3, title: "New contract pending review", desc: "TechSystems Ltd — IT Systems Upgrade $1.8M awaiting approval", time: "1 hr ago", severity: "medium", read: false },
-  { id: 4, title: "Blockchain verification complete", desc: "BatchTX-2091 — 14 transactions successfully verified", time: "3 hr ago", severity: "info", read: true },
-  { id: 5, title: "Audit report ready", desc: "Q1 2024 Infrastructure audit report is available for download", time: "5 hr ago", severity: "info", read: true },
+  { id: 1, title: "Pago anómalo detectado", desc: "MedSupply Inc — $92,400 excede el techo del contrato en 18%", time: "hace 2 min", severity: "critical", read: false },
+  { id: 2, title: "Cumplimiento del proveedor disminuido", desc: "La puntuación de MedSupply Inc cayó de 78% a 62% en últimos 30 días", time: "hace 14 min", severity: "high", read: false },
+  { id: 3, title: "Nuevo contrato pendiente de revisión", desc: "TechSystems Ltd — IT Systems Upgrade $1.8M a la espera de aprobación", time: "hace 1 hora", severity: "medium", read: false },
+  { id: 4, title: "Verificación de blockchain completada", desc: "BatchTX-2091 — 14 transacciones verificadas correctamente", time: "hace 3 horas", severity: "info", read: true },
+  { id: 5, title: "Informe de auditoría listo", desc: "El informe de auditoría de infraestructura Q1 2024 está disponible para descargar", time: "hace 5 horas", severity: "info", read: true },
 ];
  
 const severityConfig: Record<string, { color: string; bg: string; icon: React.ReactNode }> = {

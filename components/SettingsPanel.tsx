@@ -16,7 +16,7 @@ export default function SettingsPanel() {
     <div className="animate-enter space-y-4 max-w-2xl">
       <div className="flex items-center gap-2">
         <Settings className="w-5 h-5 text-blue-400" />
-        <h1 className="text-lg font-bold text-white">Settings</h1>
+        <h1 className="text-lg font-bold text-white">Configuración</h1>
       </div>
       {[
         { icon: Bell, title: "Notifications", items: [

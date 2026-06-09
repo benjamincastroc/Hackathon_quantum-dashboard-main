@@ -17,17 +17,17 @@ export default function ContractsPanel() {
     <div className="animate-enter space-y-4">
       <div className="flex items-center gap-2">
         <FileText className="w-5 h-5 text-blue-400" />
-        <h1 className="text-lg font-bold text-white">Contracts</h1>
-        <span className="ml-auto text-xs text-slate-500">5 active contracts</span>
+        <h1 className="text-lg font-bold text-white">Contratos</h1>
+        <span className="ml-auto text-xs text-slate-500">5 contratos activos</span>
       </div>
       <div className="rounded-xl border border-white/8 bg-[#0d1117] overflow-hidden">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-white/8 text-left">
               <th className="px-4 py-3 text-[11px] text-slate-500 font-semibold uppercase tracking-wider">ID</th>
-              <th className="px-4 py-3 text-[11px] text-slate-500 font-semibold uppercase tracking-wider">Title</th>
-              <th className="px-4 py-3 text-[11px] text-slate-500 font-semibold uppercase tracking-wider hidden md:table-cell">Vendor</th>
-              <th className="px-4 py-3 text-[11px] text-slate-500 font-semibold uppercase tracking-wider">Value</th>
+              <th className="px-4 py-3 text-[11px] text-slate-500 font-semibold uppercase tracking-wider">Título</th>
+              <th className="px-4 py-3 text-[11px] text-slate-500 font-semibold uppercase tracking-wider hidden md:table-cell">Proveedor</th>
+              <th className="px-4 py-3 text-[11px] text-slate-500 font-semibold uppercase tracking-wider">Monto</th>
               <th className="px-4 py-3 text-[11px] text-slate-500 font-semibold uppercase tracking-wider">Status</th>
               <th className="px-4 py-3 text-[11px] text-slate-500 font-semibold uppercase tracking-wider">Risk</th>
             </tr>

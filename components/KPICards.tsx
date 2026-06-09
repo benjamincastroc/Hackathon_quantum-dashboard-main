@@ -28,11 +28,11 @@ interface KPI {
 
 const kpis: KPI[] = [
   {
-    title: "Projects Monitored",
+    title: "Proyectos Monitoreados",
     value: "124",
     growth: "+14.2%",
     growthPositive: true,
-    subtext: "vs last quarter",
+    subtext: "vs trimestre anterior",
     icon: <FolderOpen className="w-5 h-5" />,
     valueColor: "text-blue-300",
     iconBg: "bg-blue-500/20",
@@ -42,11 +42,11 @@ const kpis: KPI[] = [
     topBarColor: "bg-blue-500",
   },
   {
-    title: "Public Funds Audited",
+    title: "Fondos Públicos Auditados",
     value: "$38.4M",
     growth: "+21%",
     growthPositive: true,
-    subtext: "total monitored",
+    subtext: "total monitoreado",
     icon: <DollarSign className="w-5 h-5" />,
     valueColor: "text-emerald-300",
     iconBg: "bg-emerald-500/20",
@@ -56,11 +56,11 @@ const kpis: KPI[] = [
     topBarColor: "bg-emerald-500",
   },
   {
-    title: "Corruption Risks",
+    title: "Riesgos de Corrupción",
     value: "17",
     growth: "+8%",
     growthPositive: false,
-    subtext: "active investigations",
+    subtext: "investigaciones activas",
     icon: <ShieldAlert className="w-5 h-5" />,
     valueColor: "text-orange-300",
     iconBg: "bg-orange-500/20",
@@ -70,9 +70,9 @@ const kpis: KPI[] = [
     topBarColor: "bg-orange-500",
   },
   {
-    title: "Critical Alerts",
+    title: "Alertas Críticas",
     value: "3",
-    subtext: "immediate action needed",
+    subtext: "acción inmediata requerida",
     icon: <Bell className="w-5 h-5" />,
     valueColor: "text-red-300",
     iconBg: "bg-red-500/20",

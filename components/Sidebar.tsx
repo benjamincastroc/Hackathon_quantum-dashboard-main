@@ -23,17 +23,17 @@ import {
 import { cn } from "@/lib/utils";
  
 export const navItems = [
-  { icon: LayoutDashboard, label: "Dashboard",        section: "dashboard" },
-  { icon: FolderOpen,      label: "Projects",         section: "projects",   badge: "124" },
-  { icon: FileText,        label: "Contracts",        section: "contracts" },
-  { icon: Building2,       label: "Suppliers",        section: "suppliers" },
-  { icon: CreditCard,      label: "Payments",         section: "payments" },
-  { icon: ShieldAlert,     label: "Risk Analysis",    section: "risk" },
-  { icon: Link2,           label: "Blockchain",       section: "blockchain" },
-  { icon: ClipboardList,   label: "Audit Reports",    section: "reports" },
-  { icon: Bot,             label: "Autonomous Agent", section: "agent" },
-  { icon: Bell,            label: "Alerts",           section: "alerts",   badge: "3", badgeDanger: true },
-  { icon: Settings,        label: "Settings",         section: "settings" },
+  { icon: LayoutDashboard, label: "Panel Principal",  section: "dashboard" },
+  { icon: FolderOpen,      label: "Proyectos",         section: "projects",   badge: "124" },
+  { icon: FileText,        label: "Contratos",         section: "contracts" },
+  { icon: Building2,       label: "Proveedores",       section: "suppliers" },
+  { icon: CreditCard,      label: "Pagos",             section: "payments" },
+  { icon: ShieldAlert,     label: "Análisis de Riesgo", section: "risk" },
+  { icon: Link2,           label: "Blockchain",        section: "blockchain" },
+  { icon: ClipboardList,   label: "Auditorías",        section: "reports" },
+  { icon: Bot,             label: "Agente Autónomo",   section: "agent" },
+  { icon: Bell,            label: "Alertas",           section: "alerts",   badge: "3", badgeDanger: true },
+  { icon: Settings,        label: "Configuración",     section: "settings" },
 ];
  
 interface SidebarProps {

@@ -21,13 +21,13 @@ export default function PaymentsPanel() {
     <div className="animate-enter space-y-4">
       <div className="flex items-center gap-2">
         <CreditCard className="w-5 h-5 text-blue-400" />
-        <h1 className="text-lg font-bold text-white">Payments</h1>
+        <h1 className="text-lg font-bold text-white">Pagos</h1>
       </div>
       <div className="grid grid-cols-3 gap-4">
         {[
-          { label: "Total Disbursed", value: "$38.4M", icon: ArrowUpRight, color: "text-blue-400" },
-          { label: "Pending", value: "$1.76M", icon: Clock, color: "text-yellow-400" },
-          { label: "Flagged", value: "$92.4K", icon: ArrowDownRight, color: "text-red-400" },
+          { label: "Total Desembolsado", value: "$38.4M", icon: ArrowUpRight, color: "text-blue-400" },
+          { label: "Pendiente", value: "$1.76M", icon: Clock, color: "text-yellow-400" },
+          { label: "Marcado", value: "$92.4K", icon: ArrowDownRight, color: "text-red-400" },
         ].map((stat) => (
           <div key={stat.label} className="rounded-xl border border-white/8 bg-[#0d1117] p-4">
             <stat.icon className={`w-4 h-4 ${stat.color} mb-2`} />
@@ -38,7 +38,7 @@ export default function PaymentsPanel() {
       </div>
       <div className="rounded-xl border border-white/8 bg-[#0d1117] overflow-hidden">
         <div className="px-4 py-3 border-b border-white/8">
-          <p className="text-xs font-semibold text-slate-300">Recent Transactions</p>
+          <p className="text-xs font-semibold text-slate-300">Transacciones Recientes</p>
         </div>
         <div className="divide-y divide-white/5">
           {payments.map((p) => (

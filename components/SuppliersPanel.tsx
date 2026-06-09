@@ -15,8 +15,8 @@ export default function SuppliersPanel() {
     <div className="animate-enter space-y-4">
       <div className="flex items-center gap-2">
         <Building2 className="w-5 h-5 text-blue-400" />
-        <h1 className="text-lg font-bold text-white">Suppliers</h1>
-        <span className="ml-auto text-xs text-slate-500">{suppliers.length} registered suppliers</span>
+        <h1 className="text-lg font-bold text-white">Proveedores</h1>
+        <span className="ml-auto text-xs text-slate-500">{suppliers.length} proveedores registrados</span>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
         {suppliers.map((s) => (
