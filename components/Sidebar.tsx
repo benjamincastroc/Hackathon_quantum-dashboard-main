@@ -1,6 +1,8 @@
 "use client";
- 
+
 import { useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
   FolderOpen,
@@ -21,38 +23,32 @@ import {
   LogOut,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
- 
+
 export const navItems = [
-  { icon: LayoutDashboard, label: "Dashboard",        section: "dashboard" },
-  { icon: FolderOpen,      label: "Projects",         section: "projects",   badge: "124" },
-  { icon: FileText,        label: "Contracts",        section: "contracts" },
-  { icon: Building2,       label: "Suppliers",        section: "suppliers" },
-  { icon: CreditCard,      label: "Payments",         section: "payments" },
-  { icon: ShieldAlert,     label: "Risk Analysis",    section: "risk" },
-  { icon: Link2,           label: "Blockchain",       section: "blockchain" },
-  { icon: ClipboardList,   label: "Audit Reports",    section: "reports" },
-  { icon: Bot,             label: "Autonomous Agent", section: "agent" },
-  { icon: Bell,            label: "Alerts",           section: "alerts",   badge: "3", badgeDanger: true },
-  { icon: Settings,        label: "Settings",         section: "settings" },
+  { icon: LayoutDashboard, label: "Dashboard",        href: "/" },
+  { icon: FolderOpen,      label: "Projects",         href: "/projects",   badge: "124" },
+  { icon: FileText,        label: "Contracts",        href: "/contracts" },
+  { icon: Building2,       label: "Suppliers",        href: "/suppliers" },
+  { icon: CreditCard,      label: "Payments",         href: "/payments" },
+  { icon: ShieldAlert,     label: "Risk Analysis",    href: "/risk" },
+  { icon: Link2,           label: "Blockchain",       href: "/blockchain" },
+  { icon: ClipboardList,   label: "Audit Reports",    href: "/reports" },
+  { icon: Bot,             label: "Autonomous Agent", href: "/agent" },
+  { icon: Bell,            label: "Alerts",           href: "/alerts",   badge: "3", badgeDanger: true },
+  { icon: Settings,        label: "Settings",         href: "/settings" },
 ];
- 
+
 interface SidebarProps {
   isOpen: boolean;
   onClose: () => void;
-  activeSection: string;
-  onSectionChange: (section: string) => void;
 }
- 
-export default function Sidebar({ isOpen, onClose, activeSection, onSectionChange }: SidebarProps) {
+
+export default function Sidebar({ isOpen, onClose }: SidebarProps) {
   const [collapsed, setCollapsed] = useState(false);
- 
-  const handleNavClick = (section: string) => {
-    onSectionChange(section);
-    onClose();
-  };
- 
+  const pathname = usePathname();
+
   const showLabels = !collapsed;
- 
+
   return (
     <aside
       className={cn(
@@ -71,7 +67,7 @@ export default function Sidebar({ isOpen, onClose, activeSection, onSectionChang
           </div>
           <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-400 rounded-full border-2 border-[#0a0c18]" />
         </div>
- 
+
         {showLabels && (
           <div className="min-w-0 flex-1">
             <p className="text-sm font-bold text-white leading-none tracking-tight">GovWatch AI</p>
@@ -80,7 +76,7 @@ export default function Sidebar({ isOpen, onClose, activeSection, onSectionChang
             </p>
           </div>
         )}
- 
+
         <button
           onClick={() => setCollapsed(!collapsed)}
           className={cn(
@@ -94,7 +90,7 @@ export default function Sidebar({ isOpen, onClose, activeSection, onSectionChang
           />
         </button>
       </div>
- 
+
       {/* ── Agent status pill ────────────────────────────── */}
       {showLabels && (
         <div className="mx-3 mt-3 px-3 py-2 rounded-lg bg-blue-500/8 border border-blue-500/15 flex items-center gap-2">
@@ -106,16 +102,17 @@ export default function Sidebar({ isOpen, onClose, activeSection, onSectionChang
           <span className="ml-auto text-[10px] text-slate-500">92% conf.</span>
         </div>
       )}
- 
+
       {/* ── Navigation ───────────────────────────────────── */}
       <nav className="flex-1 px-2 py-3 space-y-0.5 overflow-y-auto">
         {navItems.map((item) => {
           const Icon = item.icon;
-          const isActive = activeSection === item.section;
+          const isActive = item.href === "/" ? pathname === "/" : pathname?.startsWith(item.href);
           return (
-            <button
+            <Link
               key={item.label}
-              onClick={() => handleNavClick(item.section)}
+              href={item.href}
+              onClick={onClose}
               className={cn(
                 "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-150 group",
                 isActive
@@ -151,11 +148,11 @@ export default function Sidebar({ isOpen, onClose, activeSection, onSectionChang
                   )}
                 </>
               )}
-            </button>
+            </Link>
           );
         })}
       </nav>
- 
+
       {/* ── Bottom section ───────────────────────────────── */}
       <div className="border-t border-blue-500/10 p-2 space-y-1">
         {showLabels && (
@@ -168,7 +165,7 @@ export default function Sidebar({ isOpen, onClose, activeSection, onSectionChang
             <Zap className="w-3 h-3 text-yellow-400 ml-auto flex-shrink-0" />
           </div>
         )}
- 
+
         {showLabels && (
           <div className="px-3 py-1">
             <p className="text-[10px] text-slate-600 uppercase tracking-wider font-semibold">
@@ -177,7 +174,7 @@ export default function Sidebar({ isOpen, onClose, activeSection, onSectionChang
             <p className="text-xs text-slate-400 mt-0.5 font-medium">National Audit Office</p>
           </div>
         )}
- 
+
         <button className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/5 transition-colors group">
           <div className="w-7 h-7 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center flex-shrink-0">
             <User className="w-3.5 h-3.5 text-white" />
