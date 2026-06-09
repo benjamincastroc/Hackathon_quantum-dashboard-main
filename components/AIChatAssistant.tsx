@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { Bot, Send, Sparkles, User, Copy, Check } from "lucide-react";
-import { chatSuggestions, getAIResponse } from "@/lib/data";
+import { chatSuggestions } from "@/lib/data";
 import { cn } from "@/lib/utils";
 
 interface Message {
@@ -137,23 +137,36 @@ export default function AIChatAssistant() {
       content: text.trim(),
       timestamp: formatTimestamp(),
     };
-    setMessages((prev) => [...prev, userMsg]);
+    const updatedMessages = [...messages, userMsg];
+    setMessages(updatedMessages);
     setInput("");
     setIsTyping(true);
 
-    // Simulate AI thinking delay
-    const delay = 800 + Math.random() * 1200;
-    await new Promise((r) => setTimeout(r, delay));
+    try {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          messages: updatedMessages.map((m) => ({ role: m.role, content: m.content })),
+        }),
+      });
 
-    const aiResponse = getAIResponse(text);
-    const assistantMsg: Message = {
-      id: Date.now() + 1,
-      role: "assistant",
-      content: aiResponse,
-      timestamp: formatTimestamp(),
-    };
-    setIsTyping(false);
-    setMessages((prev) => [...prev, assistantMsg]);
+      const data = await res.json();
+      const assistantMsg: Message = {
+        id: Date.now() + 1,
+        role: "assistant",
+        content: res.ok ? data.content : "Lo siento, ocurrió un error al procesar tu consulta.",
+        timestamp: formatTimestamp(),
+      };
+      setMessages((prev) => [...prev, assistantMsg]);
+    } catch {
+      setMessages((prev) => [
+        ...prev,
+        { id: Date.now() + 1, role: "assistant", content: "Error de conexión. Verifica tu red e inténtalo de nuevo.", timestamp: formatTimestamp() },
+      ]);
+    } finally {
+      setIsTyping(false);
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {

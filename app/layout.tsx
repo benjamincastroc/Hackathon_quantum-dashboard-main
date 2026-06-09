@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-page-custom-font */
 import type { Metadata } from "next";
 import "./globals.css";
+import DashboardShell from "@/components/DashboardShell";
 
 export const metadata: Metadata = {
   title: "GovAI — Anti-Corruption Intelligence Platform",
@@ -23,7 +24,9 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="bg-[#060711] text-slate-100 antialiased">{children}</body>
+      <body className="bg-[#060711] text-slate-100 antialiased">
+        <DashboardShell>{children}</DashboardShell>
+      </body>
     </html>
   );
 }
