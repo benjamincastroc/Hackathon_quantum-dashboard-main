@@ -1,6 +1,7 @@
 "use client";
  
 import { useState } from "react";
+import dynamic from "next/dynamic";
 import { Bell, Search, RefreshCw, Shield, Menu, X } from "lucide-react";
 import Sidebar, { navItems } from "@/components/Sidebar";
 import KPICards from "@/components/KPICards";
@@ -17,7 +18,6 @@ import SuppliersPanel from "@/components/SuppliersPanel";
 import PaymentsPanel from "@/components/PaymentsPanel";
 import AlertsPanel from "@/components/AlertsPanel";
 import SettingsPanel from "@/components/SettingsPanel";
-import dynamic from "next/dist/shared/lib/dynamic";
  
 interface TopBarProps {
   sidebarOpen: boolean;

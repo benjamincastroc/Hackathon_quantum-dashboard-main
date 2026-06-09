@@ -13,7 +13,7 @@ interface Message {
 }
 
 function formatTimestamp(): string {
-  return new Date().toLocaleTimeString("es-PE", { hour: "2-digit", minute: "2-digit" });
+  return new Date().toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
 }
 
 const initialMessages: Message[] = [
