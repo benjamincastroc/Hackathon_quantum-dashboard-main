@@ -20,6 +20,21 @@ const typeColors: Record<string, string> = {
   Supplier: "text-cyan-400 bg-cyan-500/10 border-cyan-500/20",
 };
 
+const severityLabels: Record<string, string> = {
+  Critical: "Crítico",
+  High: "Alto",
+  Medium: "Medio",
+  Low: "Bajo",
+};
+
+const typeLabels: Record<string, string> = {
+  Financial: "Financiero",
+  Procurement: "Adquisición",
+  Execution: "Ejecución",
+  Compliance: "Cumplimiento",
+  Supplier: "Proveedor",
+};
+
 export default function AnomaliesPanel() {
   return (
     <section className="glass rounded-xl border border-blue-500/10 flex flex-col">
@@ -62,7 +77,7 @@ export default function AnomaliesPanel() {
                 <div className="flex items-start justify-between gap-2 mb-1.5">
                   <p className="text-xs font-bold text-slate-200 leading-snug">{anomaly.title}</p>
                   <span className={`flex-shrink-0 text-[10px] font-semibold px-2 py-0.5 rounded-full border ${getSeverityStyles(anomaly.severity)}`}>
-                    {anomaly.severity}
+                    {severityLabels[anomaly.severity] ?? anomaly.severity}
                   </span>
                 </div>
 
@@ -80,7 +95,7 @@ export default function AnomaliesPanel() {
                   {/* Type */}
                   <span className={`flex items-center gap-1 text-[10px] font-medium px-1.5 py-0.5 rounded border ${typeColors[anomaly.type]}`}>
                     <span>{typeIcons[anomaly.type]}</span>
-                    {anomaly.type}
+                    {typeLabels[anomaly.type] ?? anomaly.type}
                   </span>
 
                   {/* Date */}

@@ -16,6 +16,17 @@ interface StatusBadgeProps {
   status: "Healthy" | "Warning" | "Critical" | "Available" | "Operational" | "Ready" | "Normal" | "Positive";
 }
 
+const statusLabels: Record<string, string> = {
+  Healthy: "Saludable",
+  Available: "Disponible",
+  Operational: "Operacional",
+  Ready: "Listo",
+  Normal: "Normal",
+  Positive: "Positivo",
+  Warning: "Advertencia",
+  Critical: "Crítico",
+};
+
 function StatusBadge({ status }: StatusBadgeProps) {
   const isPositive = ["Healthy", "Available", "Operational", "Ready", "Normal", "Positive"].includes(status);
   return (
@@ -31,7 +42,7 @@ function StatusBadge({ status }: StatusBadgeProps) {
       ) : (
         <AlertCircle className="w-2.5 h-2.5" />
       )}
-      {status}
+      {statusLabels[status] ?? status}
     </span>
   );
 }

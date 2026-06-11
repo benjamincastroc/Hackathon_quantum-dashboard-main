@@ -39,6 +39,13 @@ export default function ProjectsTable() {
     });
 
   const statusOptions: (ProjectStatus | "All")[] = ["All", "Healthy", "Review", "Warning", "Critical"];
+  const statusLabels: Record<string, string> = {
+    All: "Todos",
+    Healthy: "Saludable",
+    Review: "Revisión",
+    Warning: "Advertencia",
+    Critical: "Crítico",
+  };
 
   return (
     <section className="glass rounded-xl border border-blue-500/10">
@@ -73,7 +80,7 @@ export default function ProjectsTable() {
                   : "text-slate-500 hover:text-slate-300 border border-transparent"
               }`}
             >
-              {s}
+              {statusLabels[s] ?? s}
             </button>
           ))}
         </div>
@@ -191,7 +198,7 @@ export default function ProjectsTable() {
                 <td className="px-4 py-3.5">
                   <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold ${getStatusStyles(project.status)}`}>
                     <span className={`w-1.5 h-1.5 rounded-full ${getStatusDot(project.status)}`} />
-                    {project.status}
+                    {statusLabels[project.status] ?? project.status}
                   </span>
                 </td>
 

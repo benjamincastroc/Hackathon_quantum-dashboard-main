@@ -2,12 +2,12 @@
 import { Building2, TrendingUp, TrendingDown } from "lucide-react";
  
 const suppliers = [
-  { name: "BuildCorp SA", category: "Infrastructure", contracts: 8, totalValue: "$12.4M", score: 94, trend: "up" },
-  { name: "TechSystems Ltd", category: "IT & Technology", contracts: 5, totalValue: "$7.2M", score: 87, trend: "up" },
-  { name: "MedSupply Inc", category: "Healthcare", contracts: 3, totalValue: "$3.1M", score: 62, trend: "down" },
-  { name: "TransLogic Co", category: "Transportation", contracts: 6, totalValue: "$9.8M", score: 91, trend: "up" },
-  { name: "EduPrint SA", category: "Education", contracts: 4, totalValue: "$1.9M", score: 78, trend: "down" },
-  { name: "GreenBuild Ltd", category: "Environment", contracts: 2, totalValue: "$2.3M", score: 85, trend: "up" },
+  { name: "BuildCorp SA", category: "Infraestructura", contracts: 8, totalValue: "$12.4M", score: 94, trend: "up" },
+  { name: "TechSystems Ltd", category: "TI y Tecnología", contracts: 5, totalValue: "$7.2M", score: 87, trend: "up" },
+  { name: "MedSupply Inc", category: "Salud", contracts: 3, totalValue: "$3.1M", score: 62, trend: "down" },
+  { name: "TransLogic Co", category: "Transporte", contracts: 6, totalValue: "$9.8M", score: 91, trend: "up" },
+  { name: "EduPrint SA", category: "Educación", contracts: 4, totalValue: "$1.9M", score: 78, trend: "down" },
+  { name: "GreenBuild Ltd", category: "Medio Ambiente", contracts: 2, totalValue: "$2.3M", score: 85, trend: "up" },
 ];
  
 export default function SuppliersPanel() {
@@ -34,14 +34,14 @@ export default function SuppliersPanel() {
             </div>
             <div className="space-y-2">
               <div className="flex justify-between text-xs">
-                <span className="text-slate-500">Compliance Score</span>
+                <span className="text-slate-500">Puntuación de Cumplimiento</span>
                 <span className={`font-semibold ${s.score >= 80 ? "text-emerald-400" : s.score >= 65 ? "text-yellow-400" : "text-red-400"}`}>{s.score}%</span>
               </div>
               <div className="h-1.5 bg-white/5 rounded-full overflow-hidden">
                 <div className={`h-full rounded-full transition-all ${s.score >= 80 ? "bg-emerald-500" : s.score >= 65 ? "bg-yellow-500" : "bg-red-500"}`} style={{ width: `${s.score}%` }} />
               </div>
               <div className="flex justify-between text-[11px] text-slate-500 pt-1">
-                <span>{s.contracts} contracts</span>
+                <span>{s.contracts} contratos</span>
                 <span className="text-blue-400 font-medium">{s.totalValue}</span>
               </div>
             </div>

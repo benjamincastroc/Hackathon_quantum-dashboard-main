@@ -16,7 +16,7 @@ function CustomTooltip({ active, payload }: TooltipProps) {
     <div className="glass-strong rounded-xl p-3 border border-blue-500/20 min-w-[180px]">
       <p className="text-xs font-bold text-white mb-1" style={{ color: d.color }}>{d.name}</p>
       <p className="text-lg font-bold text-white">{d.percentage}%</p>
-      <p className="text-[11px] text-slate-400">${d.amount.toLocaleString()} / month</p>
+      <p className="text-[11px] text-slate-400">${d.amount.toLocaleString()} / mes</p>
       <p className="text-[10px] text-slate-500 mt-1 leading-snug">{d.purpose}</p>
     </div>
   );

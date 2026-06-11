@@ -21,7 +21,7 @@ export default function AlertsPanel() {
     <div className="animate-enter space-y-4">
       <div className="flex items-center gap-2">
         <Bell className="w-5 h-5 text-red-400" />
-        <h1 className="text-lg font-bold text-white">Alerts</h1>
+        <h1 className="text-lg font-bold text-white">Alertas</h1>
         <span className="ml-2 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-red-500/20 text-red-400 border border-red-500/30 animate-pulse">3 sin leer</span>
       </div>
       <div className="space-y-3">

@@ -60,113 +60,113 @@ export interface ChatMessage {
 export const projects: Project[] = [
   {
     id: 1,
-    name: "Hospital Norte Construction",
-    agency: "Ministry of Health",
+    name: "Construcción Hospital Norte",
+    agency: "Ministerio de Salud",
     budget: 8_000_000,
     executed: 95,
     progress: 72,
     risk: 89,
     status: "Critical",
     contractor: "BuildCorp S.A.",
-    location: "Northern District",
+    location: "Distrito Norte",
     startDate: "2023-01-15",
     endDate: "2024-12-31",
   },
   {
     id: 2,
-    name: "Central Primary School",
-    agency: "Ministry of Education",
+    name: "Escuela Primaria Central",
+    agency: "Ministerio de Educación",
     budget: 2_000_000,
     executed: 42,
     progress: 40,
     risk: 21,
     status: "Healthy",
     contractor: "EduBuild Ltd.",
-    location: "City Center",
+    location: "Centro de la Ciudad",
     startDate: "2023-06-01",
     endDate: "2024-06-30",
   },
   {
     id: 3,
-    name: "Southern Highway Expansion",
-    agency: "Ministry of Transport",
+    name: "Ampliación Carretera Sur",
+    agency: "Ministerio de Transportes",
     budget: 15_000_000,
     executed: 87,
     progress: 65,
     risk: 61,
     status: "Review",
     contractor: "RoadMaster Inc.",
-    location: "Southern Region",
+    location: "Región Sur",
     startDate: "2022-09-10",
     endDate: "2025-03-31",
   },
   {
     id: 4,
-    name: "Water Treatment Plant Alpha",
-    agency: "Ministry of Environment",
+    name: "Planta de Tratamiento de Agua Alfa",
+    agency: "Ministerio del Ambiente",
     budget: 5_500_000,
     executed: 68,
     progress: 70,
     risk: 34,
     status: "Healthy",
     contractor: "AquaTech S.A.",
-    location: "Eastern Zone",
+    location: "Zona Este",
     startDate: "2023-03-20",
     endDate: "2024-09-30",
   },
   {
     id: 5,
-    name: "City Metro Line 2 Extension",
-    agency: "Urban Development Authority",
+    name: "Extensión Metro Línea 2",
+    agency: "Autoridad de Desarrollo Urbano",
     budget: 45_000_000,
     executed: 31,
     progress: 28,
     risk: 73,
     status: "Warning",
     contractor: "MetroTrans Corp.",
-    location: "Urban Core",
+    location: "Núcleo Urbano",
     startDate: "2023-01-01",
     endDate: "2026-12-31",
   },
   {
     id: 6,
-    name: "Rural Electrification Phase 3",
-    agency: "Ministry of Energy",
+    name: "Electrificación Rural Fase 3",
+    agency: "Ministerio de Energía",
     budget: 3_200_000,
     executed: 55,
     progress: 52,
     risk: 45,
     status: "Review",
     contractor: "PowerGrid S.A.",
-    location: "Rural Districts 4–7",
+    location: "Distritos Rurales 4–7",
     startDate: "2023-04-01",
     endDate: "2024-11-30",
   },
   {
     id: 7,
-    name: "National Bridge Rehabilitation",
-    agency: "Ministry of Infrastructure",
+    name: "Rehabilitación de Puentes Nacionales",
+    agency: "Ministerio de Infraestructura",
     budget: 12_000_000,
     executed: 78,
     progress: 74,
     risk: 28,
     status: "Healthy",
     contractor: "BridgeTech Ltd.",
-    location: "Multiple Regions",
+    location: "Múltiples Regiones",
     startDate: "2022-07-01",
     endDate: "2025-01-31",
   },
   {
     id: 8,
-    name: "Digital Citizen Portal",
-    agency: "Ministry of Digital Affairs",
+    name: "Portal Ciudadano Digital",
+    agency: "Ministerio de Asuntos Digitales",
     budget: 1_800_000,
     executed: 91,
     progress: 85,
     risk: 52,
     status: "Review",
     contractor: "GovTech S.A.",
-    location: "National",
+    location: "Nacional",
     startDate: "2023-05-15",
     endDate: "2024-05-14",
   },
@@ -177,68 +177,68 @@ export const projects: Project[] = [
 export const anomalies: Anomaly[] = [
   {
     id: 1,
-    title: "Cost Overrun +18%",
+    title: "Sobrecosto +18%",
     project: "Hospital Norte",
     severity: "Critical",
     type: "Financial",
     date: "2024-01-15",
     description:
-      "Project costs exceed approved budget by 18% ($1.44M) without proper written authorization or technical justification.",
+      "Los costos del proyecto superan el presupuesto aprobado en 18% ($1.44M) sin autorización escrita ni justificación técnica.",
     impact: 1_440_000,
   },
   {
     id: 2,
-    title: "Contractor Repetition Detected",
-    project: "Southern Highway",
+    title: "Repetición de Contratista Detectada",
+    project: "Carretera Sur",
     severity: "High",
     type: "Procurement",
     date: "2024-01-14",
     description:
-      "RoadMaster Inc. has won 7 of the last 9 public tenders in this region, suggesting bid manipulation or collusion.",
+      "RoadMaster Inc. ha ganado 7 de las últimas 9 licitaciones públicas en esta región, lo que sugiere manipulación o colusión.",
     impact: 3_200_000,
   },
   {
     id: 3,
-    title: "Schedule Delay — 4 Months",
-    project: "City Metro Line 2",
+    title: "Retraso de Obra — 4 Meses",
+    project: "Metro Línea 2",
     severity: "High",
     type: "Execution",
     date: "2024-01-13",
     description:
-      "Physical progress (28%) is critically behind financial execution (31%), indicating possible funds diversion.",
+      "El avance físico (28%) está críticamente por debajo de la ejecución financiera (31%), lo que indica posible desvío de fondos.",
     impact: 6_750_000,
   },
   {
     id: 4,
-    title: "Budget Modification Without Justification",
+    title: "Modificación Presupuestal Sin Justificación",
     project: "Hospital Norte",
     severity: "Critical",
     type: "Compliance",
     date: "2024-01-12",
     description:
-      "Contract addendum #3 increased scope by $920K with no technical committee review or public disclosure.",
+      "La adenda #3 del contrato incrementó el alcance en $920K sin revisión del comité técnico ni divulgación pública.",
     impact: 920_000,
   },
   {
     id: 5,
-    title: "Duplicate Payment Detected",
-    project: "Southern Highway",
+    title: "Pago Duplicado Detectado",
+    project: "Carretera Sur",
     severity: "Critical",
     type: "Financial",
     date: "2024-01-11",
     description:
-      "Invoice #INV-2024-0341 matches a payment already processed on 2023-12-28. Potential double payment of $218K.",
+      "La factura #INV-2024-0341 coincide con un pago ya procesado el 2023-12-28. Posible doble pago de $218K.",
     impact: 218_000,
   },
   {
     id: 6,
-    title: "Supplier Conflict of Interest",
-    project: "Rural Electrification",
+    title: "Conflicto de Interés con Proveedor",
+    project: "Electrificación Rural",
     severity: "High",
     type: "Supplier",
     date: "2024-01-10",
     description:
-      "PowerGrid S.A. shares directors with the ministry's procurement evaluation committee member.",
+      "PowerGrid S.A. comparte directivos con un miembro del comité de evaluación de adquisiciones del ministerio.",
     impact: 480_000,
   },
 ];
@@ -251,7 +251,7 @@ export const blockchainRecords: BlockchainRecord[] = [
     hash: "0x9f82ab7cd82e4a1b3f8d2c9e7a6b5f4d3c2e1a0b9d8c7f6e5d4c3b2a1f0e9d8c7",
     shortHash: "0x9f82ab7cd82e...",
     project: "Hospital Norte",
-    action: "Payment Approved",
+    action: "Pago Aprobado",
     amount: 420_000,
     status: "Verified",
     blockNumber: 18_432_901,
@@ -262,8 +262,8 @@ export const blockchainRecords: BlockchainRecord[] = [
     id: 2,
     hash: "0x4a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b",
     shortHash: "0x4a1b2c3d4e5f...",
-    project: "Southern Highway",
-    action: "Contract Signed",
+    project: "Carretera Sur",
+    action: "Contrato Firmado",
     amount: 2_800_000,
     status: "Verified",
     blockNumber: 18_431_544,
@@ -274,8 +274,8 @@ export const blockchainRecords: BlockchainRecord[] = [
     id: 3,
     hash: "0xb7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8",
     shortHash: "0xb7e8f9a0b1c2...",
-    project: "City Metro Line 2",
-    action: "Payment Flagged",
+    project: "Metro Línea 2",
+    action: "Pago Marcado",
     amount: 218_000,
     status: "Flagged",
     blockNumber: 18_430_112,
@@ -286,8 +286,8 @@ export const blockchainRecords: BlockchainRecord[] = [
     id: 4,
     hash: "0xc3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4",
     shortHash: "0xc3d4e5f6a7b8...",
-    project: "Water Treatment Alpha",
-    action: "Audit Completed",
+    project: "Planta de Agua Alfa",
+    action: "Auditoría Completada",
     amount: 0,
     status: "Verified",
     blockNumber: 18_428_899,
@@ -298,8 +298,8 @@ export const blockchainRecords: BlockchainRecord[] = [
     id: 5,
     hash: "0xe5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6",
     shortHash: "0xe5f6a7b8c9d0...",
-    project: "Rural Electrification",
-    action: "Contract Addendum",
+    project: "Electrificación Rural",
+    action: "Adenda de Contrato",
     amount: 480_000,
     status: "Pending",
     blockNumber: 18_427_033,
@@ -328,13 +328,13 @@ export const weeklyRiskData: RiskDataPoint[] = [
 // ─── Agent Modules ────────────────────────────────────────────────────────────
 
 export const agentModules = [
-  { name: "Contract Monitoring", status: "Active", health: 100 },
-  { name: "Financial Analysis", status: "Active", health: 98 },
-  { name: "Blockchain Validation", status: "Active", health: 100 },
-  { name: "Supplier Intelligence", status: "Active", health: 94 },
-  { name: "Risk Detection Engine", status: "Active", health: 97 },
-  { name: "Evidence Collection", status: "Active", health: 91 },
-  { name: "Compliance Monitoring", status: "Active", health: 99 },
+  { name: "Monitoreo de Contratos", status: "Activo", health: 100 },
+  { name: "Análisis Financiero", status: "Activo", health: 98 },
+  { name: "Validación Blockchain", status: "Activo", health: 100 },
+  { name: "Inteligencia de Proveedores", status: "Activo", health: 94 },
+  { name: "Motor de Detección de Riesgos", status: "Activo", health: 97 },
+  { name: "Recolección de Evidencias", status: "Activo", health: 91 },
+  { name: "Monitoreo de Cumplimiento", status: "Activo", health: 99 },
 ];
 
 // ─── Survival Engine Data ─────────────────────────────────────────────────────
@@ -347,10 +347,10 @@ export const survivalData = {
     emergencyMode: "Ready" as const,
   },
   dependencies: [
-    { name: "Government API", status: "Healthy" as const, latency: "42ms" },
-    { name: "Blockchain Node", status: "Healthy" as const, latency: "18ms" },
-    { name: "Document Registry", status: "Healthy" as const, latency: "67ms" },
-    { name: "Identity Service", status: "Healthy" as const, latency: "31ms" },
+    { name: "API Gubernamental", status: "Healthy" as const, latency: "42ms" },
+    { name: "Nodo Blockchain", status: "Healthy" as const, latency: "18ms" },
+    { name: "Registro de Documentos", status: "Healthy" as const, latency: "67ms" },
+    { name: "Servicio de Identidad", status: "Healthy" as const, latency: "31ms" },
   ],
   execution: { latency: 120, processingCapacity: "Normal" as const, systemLoad: 41 },
   economics: {
@@ -365,23 +365,23 @@ export const survivalData = {
 
 export const treasuryLayers = [
   {
-    name: "Reserve Layer",
+    name: "Capa de Reserva",
     percentage: 72,
-    purpose: "Ensure long-term survival and operational continuity",
+    purpose: "Garantizar la supervivencia a largo plazo y la continuidad operativa",
     color: "#3b82f6",
     amount: 30_240,
   },
   {
-    name: "Revenue Layer",
+    name: "Capa de Ingresos",
     percentage: 23,
-    purpose: "Support ongoing audits and autonomous monitoring",
+    purpose: "Sostener auditorías continuas y monitoreo autónomo",
     color: "#10b981",
     amount: 9_660,
   },
   {
-    name: "Experimental Layer",
+    name: "Capa Experimental",
     percentage: 5,
-    purpose: "Research, innovation, and anomaly-detection improvements",
+    purpose: "Investigación, innovación y mejora de detección de anomalías",
     color: "#8b5cf6",
     amount: 2_100,
   },
@@ -413,235 +413,235 @@ export function getAIResponse(query: string): string {
   const q = query.toLowerCase();
 
   if (q.includes("highest risk") || q.includes("most risky") || q.includes("mayor riesgo")) {
-    return `## Risk Analysis — Top Priority Alert
+    return `## Análisis de Riesgo — Alerta de Máxima Prioridad
 
-**Hospital Norte Construction** holds the highest corruption risk score of **89/100** — classified as CRITICAL.
+**Construcción Hospital Norte** tiene la puntuación de riesgo de corrupción más alta: **89/100** — clasificada como CRÍTICA.
 
-### Key Risk Factors Identified:
-- **Financial Execution Rate:** 95% of budget consumed while physical progress is only 72% — a **23-point gap** indicating potential fund diversion
-- **Unauthorized Budget Increase:** +18% cost overrun ($1.44M) without technical committee approval
-- **Budget Addendum #3:** $920K scope expansion with no public disclosure
-- **Contractor Pattern:** BuildCorp S.A. has recurring contracts across 4 Health Ministry projects
+### Factores de Riesgo Identificados:
+- **Ejecución Financiera:** 95% del presupuesto consumido con solo 72% de avance físico — una **brecha de 23 puntos** que indica posible desvío de fondos
+- **Sobrecosto No Autorizado:** +18% ($1.44M) sin aprobación del comité técnico
+- **Adenda #3:** Ampliación de $920K sin divulgación pública
+- **Patrón de Contratista:** BuildCorp S.A. tiene contratos recurrentes en 4 proyectos del Ministerio de Salud
 
-### Financial Impact Assessment:
-| Risk Factor | Estimated Exposure |
+### Evaluación de Impacto Financiero:
+| Factor de Riesgo | Exposición Estimada |
 |---|---|
-| Cost overrun | $1,440,000 |
-| Unexplained gap | $1,840,000 |
-| Addendum #3 | $920,000 |
-| **Total at Risk** | **$4,200,000** |
+| Sobrecosto | $1,440,000 |
+| Brecha inexplicada | $1,840,000 |
+| Adenda #3 | $920,000 |
+| **Total en Riesgo** | **$4,200,000** |
 
-### Recommended Actions:
-1. ⚠️ Freeze all pending payments until investigation is complete
-2. 📋 Request full technical audit from independent inspectors
-3. 🔍 Investigate BuildCorp S.A. ownership and beneficial beneficiaries
-4. ⛓️ Submit evidence package to anti-corruption prosecutor
+### Acciones Recomendadas:
+1. ⚠️ Congelar todos los pagos pendientes hasta completar la investigación
+2. 📋 Solicitar auditoría técnica independiente
+3. 🔍 Investigar propiedad de BuildCorp S.A. y beneficiarios reales
+4. ⛓️ Remitir paquete de evidencias al fiscal anticorrupción
 
-**Confidence Level:** 94% | **Evidence Quality:** High | **Blockchain Verified:** ✓`;
+**Nivel de Confianza:** 94% | **Calidad de Evidencia:** Alta | **Verificado en Blockchain:** ✓`;
   }
 
   if (q.includes("suspicious contract") || q.includes("contractor") || q.includes("contrato") || q.includes("sospechoso")) {
-    return `## Suspicious Contracts Analysis
+    return `## Análisis de Contratos Sospechosos
 
-I have identified **4 contracts** with significant red flags requiring immediate review:
+He identificado **4 contratos** con señales de alerta que requieren revisión inmediata:
 
-### 1. Hospital Norte — Contract #HC-2023-0041
-- **Contractor:** BuildCorp S.A. | **Value:** $8,000,000
-- 🔴 Unauthorized addendum (+$920K, no committee review)
-- 🔴 Cost overrun 18% above approved budget
-- Risk Score: **89/100**
+### 1. Hospital Norte — Contrato #HC-2023-0041
+- **Contratista:** BuildCorp S.A. | **Monto:** $8,000,000
+- 🔴 Adenda no autorizada (+$920K, sin revisión del comité)
+- 🔴 Sobrecosto del 18% sobre el presupuesto aprobado
+- Puntaje de Riesgo: **89/100**
 
-### 2. Southern Highway — Contract #SH-2022-0089
-- **Contractor:** RoadMaster Inc. | **Value:** $15,000,000
-- 🟠 Contractor won 7 of 9 recent tenders in region
-- 🔴 Duplicate payment detected ($218K)
-- Risk Score: **61/100**
+### 2. Carretera Sur — Contrato #SH-2022-0089
+- **Contratista:** RoadMaster Inc. | **Monto:** $15,000,000
+- 🟠 Contratista ganó 7 de 9 licitaciones recientes en la región
+- 🔴 Pago duplicado detectado ($218K)
+- Puntaje de Riesgo: **61/100**
 
-### 3. City Metro Line 2 — Contract #ML-2023-0012
-- **Contractor:** MetroTrans Corp. | **Value:** $45,000,000
-- 🟠 31% budget executed vs. 28% physical progress
-- 🟠 4-month schedule delay without penalty enforcement
-- Risk Score: **73/100**
+### 3. Metro Línea 2 — Contrato #ML-2023-0012
+- **Contratista:** MetroTrans Corp. | **Monto:** $45,000,000
+- 🟠 31% del presupuesto ejecutado vs. 28% de avance físico
+- 🟠 Retraso de 4 meses sin aplicación de penalidades
+- Puntaje de Riesgo: **73/100**
 
-### 4. Rural Electrification — Contract #RE-2023-0055
-- **Contractor:** PowerGrid S.A. | **Value:** $3,200,000
-- 🔴 Director conflict of interest with procurement committee
-- 🟠 Subcontractor relationships not disclosed
-- Risk Score: **45/100**
+### 4. Electrificación Rural — Contrato #RE-2023-0055
+- **Contratista:** PowerGrid S.A. | **Monto:** $3,200,000
+- 🔴 Conflicto de interés de directivo con comité de adquisiciones
+- 🟠 Relaciones con subcontratistas no divulgadas
+- Puntaje de Riesgo: **45/100**
 
-**Total Value Under Investigation:** $71,200,000
-**Confidence Level:** 91% | **Blockchain Verified:** ✓`;
+**Valor Total Bajo Investigación:** $71,200,000
+**Nivel de Confianza:** 91% | **Verificado en Blockchain:** ✓`;
   }
 
   if (q.includes("hospital norte") || q.includes("anomal")) {
-    return `## Anomaly Deep Dive — Hospital Norte Construction
+    return `## Análisis Profundo de Anomalía — Construcción Hospital Norte
 
-**Project ID:** HC-2023-0041 | **Risk Score:** 89/100 CRITICAL
+**ID de Proyecto:** HC-2023-0041 | **Puntaje de Riesgo:** 89/100 CRÍTICO
 
-### Anomaly #1 — Cost Overrun +18%
-- **Detected:** January 15, 2024
-- **Type:** Financial | **Severity:** Critical
-- Approved budget: $8,000,000 | Current cost: $9,440,000
-- Excess: **$1,440,000** — no written authorization found
-- This exceeds the legal threshold requiring Congressional approval
+### Anomalía #1 — Sobrecosto +18%
+- **Detectada:** 15 de enero de 2024
+- **Tipo:** Financiero | **Severidad:** Crítica
+- Presupuesto aprobado: $8,000,000 | Costo actual: $9,440,000
+- Exceso: **$1,440,000** — sin autorización escrita encontrada
+- Supera el umbral legal que requiere aprobación del Congreso
 
-### Anomaly #2 — Budget Modification Without Justification
-- **Detected:** January 12, 2024
-- **Type:** Compliance | **Severity:** Critical
-- Contract addendum #3 added $920K in scope changes
-- No technical committee meeting minutes on record
-- No public notice filed (legally required >$500K modifications)
+### Anomalía #2 — Modificación Presupuestal Sin Justificación
+- **Detectada:** 12 de enero de 2024
+- **Tipo:** Cumplimiento | **Severidad:** Crítica
+- Adenda #3 del contrato añadió $920K en cambios de alcance
+- Sin actas del comité técnico registradas
+- Sin aviso público presentado (exigido legalmente para modificaciones >$500K)
 
-### Anomaly #3 — Execution Gap Analysis
-- **Detected:** January 15, 2024 (ongoing)
-- Budget executed: **95%** | Physical progress: **72%**
-- Gap of **23 percentage points** — $1.84M unexplained
-- Site inspection photos confirm incomplete structures
+### Anomalía #3 — Análisis de Brecha de Ejecución
+- **Detectada:** 15 de enero de 2024 (en curso)
+- Presupuesto ejecutado: **95%** | Avance físico: **72%**
+- Brecha de **23 puntos porcentuales** — $1.84M sin explicación
+- Fotos de inspección confirman estructuras incompletas
 
-### Blockchain Evidence:
-- Transaction \`0x9f82ab7cd82e...\` — Payment $420K (Verified ✓)
-- Cross-referenced with invoice registry: 2 invoices unmatched
+### Evidencia Blockchain:
+- Transacción \`0x9f82ab7cd82e...\` — Pago $420K (Verificado ✓)
+- Cruce con registro de facturas: 2 facturas sin coincidencia
 
-### Recommended Actions:
-1. Immediate payment freeze ($580K remaining)
-2. Independent forensic audit
-3. Site inspection by Ministry's control unit
-4. Criminal complaint to Attorney General
+### Acciones Recomendadas:
+1. Congelamiento inmediato de pagos ($580K restantes)
+2. Auditoría forense independiente
+3. Inspección in situ por la unidad de control del Ministerio
+4. Denuncia penal ante la Fiscalía General
 
-**Evidence Quality:** 95% | **Estimated Recoverable Funds:** $2,360,000`;
+**Calidad de Evidencia:** 95% | **Fondos Recuperables Estimados:** $2,360,000`;
   }
 
   if (q.includes("audit report") || q.includes("report") || q.includes("informe") || q.includes("reporte")) {
-    return `## Q1 2024 — Autonomous Audit Report
-**Generated:** ${new Date().toLocaleDateString("en-US", { dateStyle: "long" })} | **Confidence:** 92%
+    return `## T1 2024 — Informe de Auditoría Autónoma
+**Generado:** ${new Date().toLocaleDateString("es-PE", { dateStyle: "long" })} | **Confianza:** 92%
 
 ---
 
-### Executive Summary
-GovWatch AI has monitored **124 government projects** representing **$38.4M** in public funds during Q1 2024. The autonomous agent detected **17 corruption risk events** and prevented an estimated **$4.8M** in potential losses.
+### Resumen Ejecutivo
+GovWatch AI monitoreó **124 proyectos gubernamentales** que representan **$38.4M** en fondos públicos durante el T1 2024. El agente autónomo detectó **17 eventos de riesgo de corrupción** y previno pérdidas estimadas de **$4.8M**.
 
-### Portfolio Overview
-| Status | Projects | Budget |
+### Resumen del Portafolio
+| Estado | Proyectos | Presupuesto |
 |---|---|---|
-| 🟢 Healthy | 89 | $18.2M |
-| 🟡 Under Review | 24 | $11.4M |
-| 🟠 Warning | 8 | $6.8M |
-| 🔴 Critical | 3 | $2.0M |
+| 🟢 Saludable | 89 | $18.2M |
+| 🟡 En Revisión | 24 | $11.4M |
+| 🟠 Advertencia | 8 | $6.8M |
+| 🔴 Crítico | 3 | $2.0M |
 
-### Critical Findings
-1. **Hospital Norte** — Risk 89/100 — Financial irregularities $2.36M
-2. **City Metro Line 2** — Risk 73/100 — Schedule/budget gap $6.75M
-3. **Southern Highway** — Risk 61/100 — Procurement irregularities $3.42M
+### Hallazgos Críticos
+1. **Hospital Norte** — Riesgo 89/100 — Irregularidades financieras $2.36M
+2. **Metro Línea 2** — Riesgo 73/100 — Brecha cronograma/presupuesto $6.75M
+3. **Carretera Sur** — Riesgo 61/100 — Irregularidades en adquisiciones $3.42M
 
-### Financial Impact
-- Total funds at risk identified: **$12,530,000**
-- Fraud prevented (frozen payments): **$4,800,000**
-- Ongoing investigation value: **$7,730,000**
+### Impacto Financiero
+- Fondos en riesgo identificados: **$12,530,000**
+- Fraude prevenido (pagos congelados): **$4,800,000**
+- Valor de investigaciones en curso: **$7,730,000**
 
-### Blockchain Verification
-All 1,247 transactions processed this quarter have been recorded on the immutable audit ledger. **98.7%** are fully verified.
+### Verificación Blockchain
+Las 1,247 transacciones procesadas este trimestre están registradas en el libro contable inmutable. El **98.7%** está completamente verificado.
 
-### Agent Performance
-- Audits completed: 26,666
-- Average confidence: 92%
-- System uptime: 99.97%
-- Cost per audit: $0.18
-- Public ROI: **200x**
+### Rendimiento del Agente
+- Auditorías completadas: 26,666
+- Confianza promedio: 92%
+- Disponibilidad del sistema: 99.97%
+- Costo por auditoría: $0.18
+- ROI público: **200x**
 
-**Next Scheduled Full Audit:** February 1, 2024 at 00:00 UTC`;
+**Próxima Auditoría Completa Programada:** 1 de febrero de 2024 a las 00:00 UTC`;
   }
 
   if (q.includes("supplier") || q.includes("multiple") || q.includes("proveedor")) {
-    return `## Supplier Intelligence Report — Repeat Contractor Analysis
+    return `## Informe de Inteligencia de Proveedores — Análisis de Contratistas Recurrentes
 
-I have identified **3 suppliers** appearing in multiple contracts with elevated risk patterns:
+He identificado **3 proveedores** que aparecen en múltiples contratos con patrones de riesgo elevados:
 
-### 🔴 HIGH RISK — RoadMaster Inc.
-- Contracts won: **7 of 9** public tenders (Southern Region, 2022–2024)
-- Total contract value: **$34,500,000**
-- Statistical probability of fair competition: **< 2.1%**
-- Shared addresses detected with 2 bid competitors (shell company indicators)
-- Recommended action: Procurement fraud investigation
+### 🔴 RIESGO ALTO — RoadMaster Inc.
+- Contratos ganados: **7 de 9** licitaciones públicas (Región Sur, 2022–2024)
+- Valor total de contratos: **$34,500,000**
+- Probabilidad estadística de competencia justa: **< 2.1%**
+- Domicilios compartidos con 2 competidores (indicadores de empresas fantasma)
+- Acción recomendada: Investigación por fraude en adquisiciones
 
-### 🟠 MEDIUM RISK — BuildCorp S.A.
-- Contracts won: **4** Health Ministry projects (2021–2024)
-- Total contract value: **$22,800,000**
-- Director overlap with 1 Ministry official (undisclosed)
-- Contract modifications exceed baseline by avg. 14%
-- Recommended action: Conflict of interest review
+### 🟠 RIESGO MEDIO — BuildCorp S.A.
+- Contratos ganados: **4** proyectos del Ministerio de Salud (2021–2024)
+- Valor total de contratos: **$22,800,000**
+- Superposición de directivos con 1 funcionario del Ministerio (no divulgado)
+- Modificaciones de contratos superan la línea base en promedio un 14%
+- Acción recomendada: Revisión por conflicto de interés
 
-### 🟠 MEDIUM RISK — PowerGrid S.A.
-- Contracts won: **3** Energy Ministry projects
-- Total contract value: **$9,600,000**
-- Board member sits on procurement evaluation committee
-- 2 related subcontractors not disclosed per regulations
-- Recommended action: Ethics board review + disclosure audit
+### 🟠 RIESGO MEDIO — PowerGrid S.A.
+- Contratos ganados: **3** proyectos del Ministerio de Energía
+- Valor total de contratos: **$9,600,000**
+- Miembro del directorio forma parte del comité de evaluación de adquisiciones
+- 2 subcontratistas relacionados no declarados según la normativa
+- Acción recomendada: Revisión del comité de ética + auditoría de divulgación
 
-### Network Analysis
-Cross-referencing beneficial ownership databases reveals a potential **common ownership network** connecting RoadMaster Inc. and BuildCorp S.A. through a holding company registered offshore.
+### Análisis de Red
+El cruce con bases de datos de propiedad real revela una posible **red de propiedad común** que conecta RoadMaster Inc. y BuildCorp S.A. a través de una holding registrada en el extranjero.
 
-**Blockchain Evidence Preserved:** 12 transaction records | **Confidence:** 88%`;
+**Evidencia Blockchain Preservada:** 12 registros de transacciones | **Confianza:** 88%`;
   }
 
   if (q.includes("spending") || q.includes("gasto") || q.includes("unusual") || q.includes("pattern")) {
-    return `## Unusual Spending Pattern Analysis
+    return `## Análisis de Patrones de Gasto Inusuales
 
-AI pattern recognition has flagged the following financial anomalies across the monitored portfolio:
+El reconocimiento de patrones de IA ha marcado las siguientes anomalías financieras en el portafolio monitoreado:
 
-### Pattern 1 — End-of-Year Payment Spike
-- **Projects affected:** Hospital Norte, Southern Highway
-- Dec 2023 payments spiked **340%** above monthly average
-- 8 payments processed in last 3 days of fiscal year
-- Classic indicator of budget exhaustion fraud
-- **Exposure:** $1,240,000
+### Patrón 1 — Pico de Pagos de Fin de Año
+- **Proyectos afectados:** Hospital Norte, Carretera Sur
+- Los pagos de dic. 2023 aumentaron **340%** sobre el promedio mensual
+- 8 pagos procesados en los últimos 3 días del año fiscal
+- Indicador clásico de fraude por agotamiento de presupuesto
+- **Exposición:** $1,240,000
 
-### Pattern 2 — Progress-Execution Divergence
-Projects where money flows faster than physical work:
-| Project | Executed | Physical | Gap |
+### Patrón 2 — Divergencia Avance-Ejecución
+Proyectos donde el dinero fluye más rápido que el trabajo físico:
+| Proyecto | Ejecutado | Físico | Brecha |
 |---|---|---|---|
 | Hospital Norte | 95% | 72% | 23% 🔴 |
-| City Metro Line 2 | 31% | 28% | 3% 🟡 |
-| Digital Citizen Portal | 91% | 85% | 6% 🟡 |
+| Metro Línea 2 | 31% | 28% | 3% 🟡 |
+| Portal Ciudadano Digital | 91% | 85% | 6% 🟡 |
 
-### Pattern 3 — Round-Number Payments
-- 14 payments identified as exact round numbers (e.g., $500,000.00, $1,000,000.00)
-- Real construction invoices almost never use round numbers
-- Statistically anomalous: probability < 0.003%
-- **Exposure:** $6,200,000
+### Patrón 3 — Pagos en Números Redondos
+- 14 pagos identificados como números exactamente redondos (ej. $500,000.00, $1,000,000.00)
+- Las facturas de construcción real casi nunca usan números redondos
+- Estadísticamente anómalo: probabilidad < 0.003%
+- **Exposición:** $6,200,000
 
-### Pattern 4 — Weekend Approvals
-- 6 high-value payments ($420K–$920K) approved on Saturdays/Sundays
-- Normal approval workflows require committee quorum (weekdays only)
-- All 6 bypass standard 48h review window
-- **Exposure:** $3,580,000
+### Patrón 4 — Aprobaciones en Fin de Semana
+- 6 pagos de alto valor ($420K–$920K) aprobados en sábados/domingos
+- Los flujos normales de aprobación requieren quórum del comité (solo días hábiles)
+- Los 6 evitaron la ventana estándar de revisión de 48h
+- **Exposición:** $3,580,000
 
-**Total Unusual Spend Flagged:** $11,020,000
-**Confidence Level:** 89% | **Blockchain Records:** 23 flagged transactions`;
+**Total de Gasto Inusual Marcado:** $11,020,000
+**Nivel de Confianza:** 89% | **Registros Blockchain:** 23 transacciones marcadas`;
   }
 
   // Default response
-  return `## GovWatch AI Analysis
+  return `## Análisis GovWatch AI
 
-Thank you for your query. Based on current monitoring data across **124 government projects** (${new Date().toLocaleDateString("en-US", { dateStyle: "long" })}):
+Consulta recibida. Con base en los datos de monitoreo actuales sobre **124 proyectos gubernamentales** (${new Date().toLocaleDateString("es-PE", { dateStyle: "long" })}):
 
-### Current System Status
-- **17 active risk events** under investigation
-- **3 critical alerts** requiring immediate action
-- **$4.8M** in fraud prevented this quarter
-- System confidence: **92%** | Uptime: **99.97%**
+### Estado Actual del Sistema
+- **17 eventos de riesgo activos** bajo investigación
+- **3 alertas críticas** que requieren acción inmediata
+- **$4.8M** en fraude prevenido este trimestre
+- Confianza del sistema: **92%** | Disponibilidad: **99.97%**
 
-### Most Urgent Priorities:
-1. 🔴 **Hospital Norte** — Risk 89/100 — Immediate payment freeze recommended
-2. 🟠 **City Metro Line 2** — Risk 73/100 — Progress-budget gap investigation
-3. 🟠 **Southern Highway** — Risk 61/100 — Procurement review needed
+### Prioridades Más Urgentes:
+1. 🔴 **Hospital Norte** — Riesgo 89/100 — Congelamiento de pagos recomendado
+2. 🟠 **Metro Línea 2** — Riesgo 73/100 — Investigación de brecha avance-presupuesto
+3. 🟠 **Carretera Sur** — Riesgo 61/100 — Revisión de adquisiciones necesaria
 
-### Suggested Next Actions:
-- Ask me to analyze a specific project or contract
-- Request a full audit report
-- Query suspicious supplier patterns
-- Review blockchain verification records
+### Próximas Acciones Sugeridas:
+- Pídeme analizar un proyecto o contrato específico
+- Solicita un informe de auditoría completo
+- Consulta patrones de proveedores sospechosos
+- Revisa los registros de verificación blockchain
 
-I can analyze any aspect of the monitored portfolio. What would you like to investigate?
+Puedo analizar cualquier aspecto del portafolio monitoreado. ¿Qué deseas investigar?
 
-**Confidence:** 92% | **Last Data Sync:** 2 minutes ago | **Blockchain:** ✓ Verified`;
+**Confianza:** 92% | **Última Sincronización:** hace 2 minutos | **Blockchain:** ✓ Verificado`;
 }

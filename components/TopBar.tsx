@@ -13,7 +13,7 @@ export default function TopBar({ sidebarOpen, onMenuToggle }: TopBarProps) {
   const pathname = usePathname();
   const sectionLabel =
     navItems.find((n) => (n.href === "/" ? pathname === "/" : pathname?.startsWith(n.href)))?.label ??
-    "Dashboard";
+    "Tablero";
 
   return (
     <header className="sticky top-0 z-30 flex items-center justify-between px-4 sm:px-6 py-3 border-b border-blue-500/10 bg-[#060711]/90 backdrop-blur-xl">
@@ -56,7 +56,7 @@ export default function TopBar({ sidebarOpen, onMenuToggle }: TopBarProps) {
             <span className="ping-ring absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
             <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400" />
           </span>
-          <span className="text-[10px] font-semibold text-emerald-400">LIVE</span>
+          <span className="text-[10px] font-semibold text-emerald-400">EN VIVO</span>
         </div>
       </div>
     </header>

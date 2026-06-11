@@ -2,18 +2,24 @@
 import { CreditCard, ArrowUpRight, ArrowDownRight, Clock } from "lucide-react";
  
 const payments = [
-  { id: "PAY-2041", vendor: "BuildCorp SA", amount: "$840,000", date: "Jun 07, 2024", status: "Completed", type: "out" },
-  { id: "PAY-2040", vendor: "TechSystems Ltd", amount: "$215,000", date: "Jun 06, 2024", status: "Pending", type: "out" },
-  { id: "PAY-2039", vendor: "MedSupply Inc", amount: "$92,400", date: "Jun 05, 2024", status: "Flagged", type: "out" },
-  { id: "PAY-2038", vendor: "TransLogic Co", amount: "$1,200,000", date: "Jun 04, 2024", status: "Completed", type: "out" },
-  { id: "PAY-2037", vendor: "EduPrint SA", amount: "$34,000", date: "Jun 03, 2024", status: "Completed", type: "out" },
-  { id: "PAY-2036", vendor: "GreenBuild Ltd", amount: "$560,000", date: "Jun 02, 2024", status: "Pending", type: "out" },
+  { id: "PAY-2041", vendor: "BuildCorp SA", amount: "$840,000", date: "07 jun. 2024", status: "Completed", type: "out" },
+  { id: "PAY-2040", vendor: "TechSystems Ltd", amount: "$215,000", date: "06 jun. 2024", status: "Pending", type: "out" },
+  { id: "PAY-2039", vendor: "MedSupply Inc", amount: "$92,400", date: "05 jun. 2024", status: "Flagged", type: "out" },
+  { id: "PAY-2038", vendor: "TransLogic Co", amount: "$1,200,000", date: "04 jun. 2024", status: "Completed", type: "out" },
+  { id: "PAY-2037", vendor: "EduPrint SA", amount: "$34,000", date: "03 jun. 2024", status: "Completed", type: "out" },
+  { id: "PAY-2036", vendor: "GreenBuild Ltd", amount: "$560,000", date: "02 jun. 2024", status: "Pending", type: "out" },
 ];
- 
+
 const statusStyles: Record<string, string> = {
   Completed: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20",
   Pending: "text-yellow-400 bg-yellow-500/10 border-yellow-500/20",
   Flagged: "text-red-400 bg-red-500/10 border-red-500/20 animate-pulse",
+};
+
+const statusLabels: Record<string, string> = {
+  Completed: "Completado",
+  Pending: "Pendiente",
+  Flagged: "Marcado",
 };
  
 export default function PaymentsPanel() {
@@ -54,7 +60,7 @@ export default function PaymentsPanel() {
               </div>
               <div className="flex items-center gap-3">
                 <p className="text-sm font-semibold text-white">{p.amount}</p>
-                <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border ${statusStyles[p.status]}`}>{p.status}</span>
+                <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border ${statusStyles[p.status]}`}>{statusLabels[p.status] ?? p.status}</span>
               </div>
             </div>
           ))}

@@ -6,16 +6,19 @@ import { formatCurrency } from "@/lib/utils";
 
 const statusConfig = {
   Verified: {
+    label: "Verificado",
     icon: <CheckCircle2 className="w-3.5 h-3.5" />,
     style: "text-emerald-400 bg-emerald-500/10 border-emerald-500/25",
     dot: "bg-emerald-400",
   },
   Flagged: {
+    label: "Marcado",
     icon: <AlertCircle className="w-3.5 h-3.5" />,
     style: "text-red-400 bg-red-500/10 border-red-500/25",
     dot: "bg-red-400 animate-pulse",
   },
   Pending: {
+    label: "Pendiente",
     icon: <Clock className="w-3.5 h-3.5" />,
     style: "text-yellow-400 bg-yellow-500/10 border-yellow-500/25",
     dot: "bg-yellow-400",
@@ -57,7 +60,7 @@ export default function BlockchainPanel() {
                 </code>
                 <span className={`flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full border ${sc.style}`}>
                   {sc.icon}
-                  {record.status}
+                  {sc.label}
                 </span>
               </div>
 

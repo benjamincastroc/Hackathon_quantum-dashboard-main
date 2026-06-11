@@ -4,9 +4,9 @@ import "./globals.css";
 import DashboardShell from "@/components/DashboardShell";
 
 export const metadata: Metadata = {
-  title: "GovAI — Anti-Corruption Intelligence Platform",
+  title: "GovWatch AI — Plataforma de Inteligencia Anticorrupción",
   description:
-    "Autonomous AI-powered anti-corruption monitoring for governments, auditors, and transparency organizations.",
+    "Monitoreo anticorrupción autónomo impulsado por IA para gobiernos, auditores y organizaciones de transparencia.",
 };
 
 export default function RootLayout({
@@ -15,7 +15,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="dark">
+    <html lang="es" className="dark">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
