@@ -51,18 +51,18 @@ function MetricRow({ label, value, sub }: { label: string; value: string | numbe
 const rules = [
   {
     icon: <Brain className="w-4 h-4 text-blue-400" />,
-    label: "Confidence Rule",
-    desc: "Detect when core assumptions become unreliable",
+    label: "Regla de Confianza",
+    desc: "Detectar cuándo los supuestos clave se vuelven no fiables",
     color: "from-blue-500/10 to-blue-500/5",
     border: "border-blue-500/20",
     iconBg: "bg-blue-500/15",
     content: (
       <>
-        <MetricRow label="Data Confidence" value={`${survivalData.confidence.dataConfidence}%`} />
-        <MetricRow label="Evidence Reliability" value={`${survivalData.confidence.evidenceReliability}%`} />
+        <MetricRow label="Confianza en Datos" value={`${survivalData.confidence.dataConfidence}%`} />
+        <MetricRow label="Fiabilidad de Evidencia" value={`${survivalData.confidence.evidenceReliability}%`} />
         <div className="mt-2">
           <div className="flex justify-between text-[10px] text-slate-600 mb-1">
-            <span>Confidence Level</span>
+            <span>Nivel de Confianza</span>
             <span>{survivalData.confidence.dataConfidence}%</span>
           </div>
           <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
@@ -80,16 +80,16 @@ const rules = [
   },
   {
     icon: <LogOut className="w-4 h-4 text-purple-400" />,
-    label: "Exitability Rule",
-    desc: "Measure ability to stop, rollback, and recover safely",
+    label: "Regla de Salida",
+    desc: "Medir capacidad de detener, revertir y recuperar de forma segura",
     color: "from-purple-500/10 to-purple-500/5",
     border: "border-purple-500/20",
     iconBg: "bg-purple-500/15",
     content: (
       <>
-        <MetricRow label="Rollback Readiness" value={survivalData.exitability.rollbackReadiness} />
-        <MetricRow label="Recovery Status" value={survivalData.exitability.recoveryStatus} />
-        <MetricRow label="Emergency Mode" value={survivalData.exitability.emergencyMode} />
+        <MetricRow label="Listo para Revertir" value={survivalData.exitability.rollbackReadiness} />
+        <MetricRow label="Estado de Recuperación" value={survivalData.exitability.recoveryStatus} />
+        <MetricRow label="Modo Emergencia" value={survivalData.exitability.emergencyMode} />
         <div className="mt-2 flex justify-end gap-1.5 flex-wrap">
           <StatusBadge status={survivalData.exitability.rollbackReadiness} />
           <StatusBadge status={survivalData.exitability.emergencyMode} />
@@ -99,8 +99,8 @@ const rules = [
   },
   {
     icon: <Network className="w-4 h-4 text-cyan-400" />,
-    label: "Dependency Health",
-    desc: "Monitor all critical external integrations",
+    label: "Salud de Dependencias",
+    desc: "Monitorear todas las integraciones externas críticas",
     color: "from-cyan-500/10 to-cyan-500/5",
     border: "border-cyan-500/20",
     iconBg: "bg-cyan-500/15",
@@ -127,18 +127,18 @@ const rules = [
   },
   {
     icon: <Cpu className="w-4 h-4 text-orange-400" />,
-    label: "Execution Rule",
-    desc: "Monitor processing capacity and system performance",
+    label: "Regla de Ejecución",
+    desc: "Monitorear capacidad de procesamiento y rendimiento del sistema",
     color: "from-orange-500/10 to-orange-500/5",
     border: "border-orange-500/20",
     iconBg: "bg-orange-500/15",
     content: (
       <>
-        <MetricRow label="Latency" value={`${survivalData.execution.latency}ms`} />
-        <MetricRow label="Processing" value={survivalData.execution.processingCapacity} />
+        <MetricRow label="Latencia" value={`${survivalData.execution.latency}ms`} />
+        <MetricRow label="Procesamiento" value={survivalData.execution.processingCapacity} />
         <div className="mt-2">
           <div className="flex justify-between text-[10px] text-slate-600 mb-1">
-            <span>System Load</span>
+            <span>Carga del Sistema</span>
             <span>{survivalData.execution.systemLoad}%</span>
           </div>
           <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
@@ -156,17 +156,17 @@ const rules = [
   },
   {
     icon: <TrendingUp className="w-4 h-4 text-emerald-400" />,
-    label: "Unit Economics Rule",
-    desc: "Ensure operation creates net positive public value",
+    label: "Regla de Economía",
+    desc: "Asegurar que la operación genera valor público neto positivo",
     color: "from-emerald-500/10 to-emerald-500/5",
     border: "border-emerald-500/20",
     iconBg: "bg-emerald-500/15",
     content: (
       <>
-        <MetricRow label="Monthly Cost" value={`$${survivalData.economics.operatingCost}`} />
-        <MetricRow label="Fraud Prevention Value" value={`$${(survivalData.economics.fraudPreventionValue / 1000).toFixed(0)}K`} />
+        <MetricRow label="Costo Mensual" value={`$${survivalData.economics.operatingCost}`} />
+        <MetricRow label="Valor Fraude Prevenido" value={`$${(survivalData.economics.fraudPreventionValue / 1000).toFixed(0)}K`} />
         <div className="flex items-center justify-between mt-1 py-1.5">
-          <span className="text-[11px] text-slate-500">ROI</span>
+          <span className="text-[11px] text-slate-500">ROI (Retorno)</span>
           <span className="text-base font-bold text-emerald-400">{survivalData.economics.roi}x</span>
         </div>
         <div className="flex justify-end">
@@ -187,13 +187,13 @@ export default function SurvivalEngine() {
             <Activity className="w-4 h-4 text-blue-400" />
           </div>
           <div>
-            <h2 className="text-sm font-bold text-white">Autonomous Survival Engine</h2>
-            <p className="text-xs text-slate-500">5-rule intelligence system — operational resilience</p>
+            <h2 className="text-sm font-bold text-white">Motor de Supervivencia Autónomo</h2>
+            <p className="text-xs text-slate-500">Sistema de inteligencia de 5 reglas — resiliencia operacional</p>
           </div>
         </div>
         <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20">
           <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-          <span className="text-[11px] font-semibold text-emerald-400">All Rules Passing</span>
+          <span className="text-[11px] font-semibold text-emerald-400">Todas las Reglas Activas</span>
         </div>
       </div>
 
@@ -221,15 +221,15 @@ export default function SurvivalEngine() {
       {/* Survival principles footer */}
       <div className="mt-5 p-4 rounded-xl bg-white/[0.03] border border-white/[0.06]">
         <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-2">
-          Operating Principles
+          Principios Operativos
         </p>
         <div className="grid grid-cols-2 md:grid-cols-5 gap-2">
           {[
-            "Survival before optimization",
-            "Continuity before output",
-            "Separate capital layers",
-            "Monitor confidence always",
-            "Enter safe mode on risk",
+            "Supervivencia antes que optimización",
+            "Continuidad antes que producción",
+            "Separar capas de capital",
+            "Monitorear confianza siempre",
+            "Activar modo seguro ante riesgo",
           ].map((principle, i) => (
             <div key={i} className="flex items-start gap-1.5">
               <span className="text-blue-500 text-[10px] font-bold flex-shrink-0 mt-0.5">{i + 1}.</span>

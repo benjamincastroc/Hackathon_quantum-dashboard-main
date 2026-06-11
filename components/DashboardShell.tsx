@@ -29,11 +29,11 @@ export default function DashboardShell({ children }: { children: React.ReactNode
             {children}
 
             <div className="py-4 border-t border-white/5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-[10px] text-slate-600">
-              <p>GovAI v3.2 — Autonomous Anti-Corruption Platform</p>
+              <p>GovAI v3.2 — Plataforma Autónoma Anti-Corrupción</p>
               <div className="flex flex-wrap items-center gap-3">
-                <span>Security: AES-256</span>
-                <span>Blockchain: Verified</span>
-                <span className="text-emerald-500">● All Systems Operational</span>
+                <span>Seguridad: AES-256</span>
+                <span>Blockchain: Verificado</span>
+                <span className="text-emerald-500">● Todos los Sistemas Operativos</span>
               </div>
             </div>
           </div>

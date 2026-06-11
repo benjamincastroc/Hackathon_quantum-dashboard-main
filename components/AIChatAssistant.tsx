@@ -20,20 +20,20 @@ const initialMessages: Message[] = [
   {
     id: 1,
     role: "assistant",
-    content: `## GovWatch AI Assistant Ready
+    content: `## GovWatch AI Asistente Listo
 
-I'm your autonomous anti-corruption audit assistant. I'm currently monitoring **124 government projects** worth **$38.4M** in public funds.
+Soy tu asistente autónomo de auditoría anticorrupción. Actualmente monitoreo **124 proyectos gubernamentales** por valor de **$38.4M** en fondos públicos.
 
-### What I can help you with:
-- 🔍 Analyze specific projects for corruption risks
-- 📊 Identify anomalous spending patterns
-- ⛓️ Verify blockchain audit records
-- 📋 Generate comprehensive audit reports
-- 🏢 Investigate supplier relationships
+### En qué puedo ayudarte:
+- 🔍 Analizar proyectos específicos en busca de riesgos de corrupción
+- 📊 Identificar patrones de gasto anómalos
+- ⛓️ Verificar registros de auditoría en blockchain
+- 📋 Generar informes de auditoría completos
+- 🏢 Investigar relaciones con proveedores
 
-Select a suggested prompt below or type your own question to begin.
+Selecciona una consulta sugerida o escribe tu propia pregunta para comenzar.
 
-**Last data sync:** 2 minutes ago | **Confidence:** 92%`,
+**Última sincronización:** hace 2 minutos | **Confianza:** 92%`,
     timestamp: formatTimestamp(),
   },
 ];
@@ -183,13 +183,13 @@ export default function AIChatAssistant() {
             <Sparkles className="w-4 h-4 text-white" />
           </div>
           <div>
-              <h2 className="text-sm font-bold text-white">Gov AI Assistant</h2>
-            <p className="text-[10px] text-slate-500">Autonomous anti-corruption auditor</p>
+              <h2 className="text-sm font-bold text-white">GovWatch AI Asistente</h2>
+            <p className="text-[10px] text-slate-500">Auditor autónomo anticorrupción</p>
           </div>
         </div>
         <div className="flex items-center gap-1.5 text-[10px] text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/20">
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-          Online
+          En línea
         </div>
       </div>
 
@@ -259,7 +259,7 @@ export default function AIChatAssistant() {
       {messages.length <= 2 && (
         <div className="px-4 pb-3 flex-shrink-0">
           <p className="text-[10px] text-slate-600 mb-2 uppercase tracking-wide font-semibold">
-            Suggested queries
+            Consultas sugeridas
           </p>
           <div className="flex flex-wrap gap-1.5">
             {chatSuggestions.slice(0, 4).map((s) => (
@@ -282,7 +282,7 @@ export default function AIChatAssistant() {
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Ask about risks, contracts, anomalies..."
+            placeholder="Pregunta sobre riesgos, contratos, anomalías..."
             className="flex-1 bg-transparent text-xs text-slate-300 placeholder-slate-600 focus:outline-none"
             disabled={isTyping}
           />

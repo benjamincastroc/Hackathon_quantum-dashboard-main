@@ -17,8 +17,8 @@ export default function AutonomousAgent() {
               <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-400 border-2 border-[#10121f]" />
             </div>
             <div>
-              <h2 className="text-sm font-bold text-white">Autonomous Audit Agent</h2>
-              <p className="text-[10px] text-slate-500">Continuous monitoring — 24/7 active</p>
+              <h2 className="text-sm font-bold text-white">Agente de Auditoría Autónomo</h2>
+              <p className="text-[10px] text-slate-500">Monitoreo continuo — activo 24/7</p>
             </div>
           </div>
           <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20">
@@ -36,22 +36,22 @@ export default function AutonomousAgent() {
             <div className="flex items-center justify-center gap-1 mb-1">
               <Clock className="w-3 h-3 text-slate-500" />
             </div>
-            <p className="text-xs font-bold text-white">2 min ago</p>
-            <p className="text-[10px] text-slate-500">Last Analysis</p>
+            <p className="text-xs font-bold text-white">hace 2 min</p>
+            <p className="text-[10px] text-slate-500">Último Análisis</p>
           </div>
           <div className="bg-white/5 rounded-lg p-2.5 text-center">
             <div className="flex items-center justify-center gap-1 mb-1">
               <Zap className="w-3 h-3 text-cyan-400" />
             </div>
             <p className="text-xs font-bold text-cyan-400">92%</p>
-            <p className="text-[10px] text-slate-500">Confidence</p>
+            <p className="text-[10px] text-slate-500">Confianza</p>
           </div>
           <div className="bg-white/5 rounded-lg p-2.5 text-center">
             <div className="flex items-center justify-center gap-1 mb-1">
               <Shield className="w-3 h-3 text-emerald-400" />
             </div>
-            <p className="text-xs font-bold text-emerald-400">Healthy</p>
-            <p className="text-[10px] text-slate-500">System Health</p>
+            <p className="text-xs font-bold text-emerald-400">Saludable</p>
+            <p className="text-[10px] text-slate-500">Salud del Sistema</p>
           </div>
         </div>
       </div>
@@ -59,7 +59,7 @@ export default function AutonomousAgent() {
       {/* Modules */}
       <div className="p-5 flex-1">
         <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-3">
-          Active Modules
+          Módulos Activos
         </p>
         <div className="space-y-2.5">
           {agentModules.map((module, i) => (
@@ -94,7 +94,7 @@ export default function AutonomousAgent() {
         <div className="bg-gradient-to-r from-blue-500/10 to-cyan-500/10 border border-blue-500/20 rounded-lg p-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Activity className="w-3.5 h-3.5 text-blue-400" />
-            <span className="text-xs text-slate-400">Audits completed today</span>
+            <span className="text-xs text-slate-400">Auditorías completadas hoy</span>
           </div>
           <span className="text-sm font-bold text-blue-400">2,666</span>
         </div>

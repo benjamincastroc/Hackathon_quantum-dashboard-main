@@ -30,8 +30,8 @@ export default function AgentTreasury() {
           <Vault className="w-4 h-4 text-yellow-400" />
         </div>
         <div>
-          <h2 className="text-sm font-bold text-white">Agent Treasury &amp; Sustainability</h2>
-          <p className="text-xs text-slate-500">Autonomous operating economics — 3-layer capital structure</p>
+          <h2 className="text-sm font-bold text-white">Tesorería del Agente y Sostenibilidad</h2>
+          <p className="text-xs text-slate-500">Economía operativa autónoma — estructura de capital en 3 capas</p>
         </div>
       </div>
 
@@ -61,7 +61,7 @@ export default function AgentTreasury() {
             {/* Center label */}
             <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
               <p className="text-2xl font-bold text-white">$42K</p>
-              <p className="text-[10px] text-slate-500">Total Reserves</p>
+              <p className="text-[10px] text-slate-500">Reservas Totales</p>
             </div>
           </div>
 
@@ -86,40 +86,40 @@ export default function AgentTreasury() {
         {/* Metrics grid */}
         <div className="space-y-3">
           <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">
-            Operating Economics
+            Economía Operativa
           </p>
 
           <div className="grid grid-cols-2 sm:grid-cols-2 gap-3">
             {[
               {
                 icon: <DollarSign className="w-3.5 h-3.5 text-blue-400" />,
-                label: "Monthly Operating Cost",
+                label: "Costo Operativo Mensual",
                 value: `$${treasuryMetrics.monthlyOperatingCost}`,
-                sub: "per month",
+                sub: "por mes",
                 color: "text-blue-400",
                 bg: "bg-blue-500/10 border-blue-500/20",
               },
               {
                 icon: <BarChart3 className="w-3.5 h-3.5 text-cyan-400" />,
-                label: "Cost per Audit",
+                label: "Costo por Auditoría",
                 value: `$${treasuryMetrics.costPerAudit}`,
-                sub: "per analysis",
+                sub: "por análisis",
                 color: "text-cyan-400",
                 bg: "bg-cyan-500/10 border-cyan-500/20",
               },
               {
                 icon: <TrendingUp className="w-3.5 h-3.5 text-emerald-400" />,
-                label: "Est. Public Savings",
+                label: "Ahorro Público Est.",
                 value: `$${(treasuryMetrics.estimatedPublicSavings / 1000).toFixed(0)}K`,
-                sub: "Q1 2024",
+                sub: "T1 2024",
                 color: "text-emerald-400",
                 bg: "bg-emerald-500/10 border-emerald-500/20",
               },
               {
                 icon: <Clock className="w-3.5 h-3.5 text-purple-400" />,
-                label: "Runway",
-                value: `${treasuryMetrics.runway} mo`,
-                sub: "at current burn",
+                label: "Autonomía",
+                value: `${treasuryMetrics.runway} mes`,
+                sub: "al ritmo actual",
                 color: "text-purple-400",
                 bg: "bg-purple-500/10 border-purple-500/20",
               },
@@ -139,15 +139,15 @@ export default function AgentTreasury() {
               <div>
                 <div className="flex items-center gap-1.5 mb-1">
                   <Zap className="w-3.5 h-3.5 text-yellow-400" />
-                  <p className="text-xs font-semibold text-slate-300">Return on Investment</p>
+                  <p className="text-xs font-semibold text-slate-300">Retorno sobre la Inversión</p>
                 </div>
                 <p className="text-[11px] text-slate-500">
-                  Every $1 invested returns ~$200 in prevented fraud
+                  Cada $1 invertido retorna ~$200 en fraude prevenido
                 </p>
               </div>
               <div className="text-right">
                 <p className="text-3xl font-bold gradient-text-blue">{treasuryMetrics.roi}x</p>
-                <p className="text-[10px] text-emerald-400 font-semibold">Positive ROI</p>
+                <p className="text-[10px] text-emerald-400 font-semibold">ROI Positivo</p>
               </div>
             </div>
           </div>

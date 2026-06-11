@@ -30,7 +30,7 @@ export default function TopBar({ sidebarOpen, onMenuToggle }: TopBarProps) {
           <span className="text-xs text-slate-500 hidden sm:block">/</span>
           <span className="text-xs font-semibold text-white">{sectionLabel}</span>
           <span className="text-[10px] text-slate-600 ml-1 hidden md:block">
-            Last updated: 2 min ago
+            Última actualización: hace 2 min
           </span>
         </div>
       </div>
@@ -38,7 +38,7 @@ export default function TopBar({ sidebarOpen, onMenuToggle }: TopBarProps) {
       <div className="flex items-center gap-1.5 sm:gap-2">
         <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs text-slate-500 hover:border-white/20 transition-colors cursor-pointer w-44">
           <Search className="w-3.5 h-3.5 flex-shrink-0" />
-          <span className="truncate">Search platform...</span>
+          <span className="truncate">Buscar en la plataforma...</span>
           <kbd className="ml-auto text-[10px] bg-white/10 px-1.5 py-0.5 rounded font-mono">⌘K</kbd>
         </div>
         <button className="md:hidden p-1.5 rounded-lg hover:bg-white/10 transition-colors text-slate-500 hover:text-slate-300">

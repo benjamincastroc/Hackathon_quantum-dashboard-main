@@ -46,15 +46,15 @@ export default function ProjectsTable() {
       <div className="p-4 sm:p-5 border-b border-blue-500/10 space-y-3">
         <div className="flex items-center justify-between gap-2">
           <div>
-            <h2 className="text-sm font-bold text-white">Project Monitoring</h2>
-            <p className="text-xs text-slate-500 mt-0.5">{filtered.length} projects displayed</p>
+            <h2 className="text-sm font-bold text-white">Monitoreo de Proyectos</h2>
+            <p className="text-xs text-slate-500 mt-0.5">{filtered.length} proyectos mostrados</p>
           </div>
           {/* Search */}
           <div className="relative">
             <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-500" />
             <input
               type="text"
-              placeholder="Search..."
+              placeholder="Buscar..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="pl-8 pr-3 py-1.5 text-xs bg-white/5 border border-white/10 rounded-lg text-slate-300 placeholder-slate-600 focus:outline-none focus:border-blue-500/40 w-32 sm:w-44"
@@ -85,13 +85,13 @@ export default function ProjectsTable() {
           <thead>
             <tr className="border-b border-white/5">
               {[
-                { label: "Project", key: "name" as SortKey },
-                { label: "Agency", key: null },
-                { label: "Budget", key: "budget" as SortKey },
-                { label: "Executed %", key: "executed" as SortKey },
-                { label: "Physical %", key: "progress" as SortKey },
-                { label: "Risk Score", key: "risk" as SortKey },
-                { label: "Status", key: null },
+                { label: "Proyecto", key: "name" as SortKey },
+                { label: "Entidad", key: null },
+                { label: "Presupuesto", key: "budget" as SortKey },
+                { label: "Ejecutado %", key: "executed" as SortKey },
+                { label: "Físico %", key: "progress" as SortKey },
+                { label: "Riesgo", key: "risk" as SortKey },
+                { label: "Estado", key: null },
                 { label: "", key: null },
               ].map((col) => (
                 <th

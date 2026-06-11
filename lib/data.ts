@@ -399,12 +399,12 @@ export const treasuryMetrics = {
 // ─── Chat Suggested Prompts ───────────────────────────────────────────────────
 
 export const chatSuggestions = [
-  "Which project has the highest corruption risk?",
-  "Show me all suspicious contracts.",
-  "Explain the anomalies detected in Hospital Norte.",
-  "Generate a complete audit report for this quarter.",
-  "Which suppliers appear in multiple contracts?",
-  "Show projects with unusual spending patterns.",
+  "¿Qué proyecto tiene el mayor riesgo de corrupción?",
+  "Muéstrame todos los contratos sospechosos.",
+  "Explica las anomalías detectadas en Hospital Norte.",
+  "Genera un informe de auditoría completo para este trimestre.",
+  "¿Qué proveedores aparecen en múltiples contratos?",
+  "Muestra proyectos con patrones de gasto inusuales.",
 ];
 
 // ─── AI Chat Responses ────────────────────────────────────────────────────────
@@ -440,7 +440,7 @@ export function getAIResponse(query: string): string {
 **Confidence Level:** 94% | **Evidence Quality:** High | **Blockchain Verified:** ✓`;
   }
 
-  if (q.includes("suspicious contract") || q.includes("contractor") || q.includes("contrato")) {
+  if (q.includes("suspicious contract") || q.includes("contractor") || q.includes("contrato") || q.includes("sospechoso")) {
     return `## Suspicious Contracts Analysis
 
 I have identified **4 contracts** with significant red flags requiring immediate review:
@@ -511,7 +511,7 @@ I have identified **4 contracts** with significant red flags requiring immediate
 **Evidence Quality:** 95% | **Estimated Recoverable Funds:** $2,360,000`;
   }
 
-  if (q.includes("audit report") || q.includes("reporte") || q.includes("report")) {
+  if (q.includes("audit report") || q.includes("report") || q.includes("informe") || q.includes("reporte")) {
     return `## Q1 2024 — Autonomous Audit Report
 **Generated:** ${new Date().toLocaleDateString("en-US", { dateStyle: "long" })} | **Confidence:** 92%
 
@@ -551,7 +551,7 @@ All 1,247 transactions processed this quarter have been recorded on the immutabl
 **Next Scheduled Full Audit:** February 1, 2024 at 00:00 UTC`;
   }
 
-  if (q.includes("supplier") || q.includes("proveedor") || q.includes("multiple")) {
+  if (q.includes("supplier") || q.includes("multiple") || q.includes("proveedor")) {
     return `## Supplier Intelligence Report — Repeat Contractor Analysis
 
 I have identified **3 suppliers** appearing in multiple contracts with elevated risk patterns:

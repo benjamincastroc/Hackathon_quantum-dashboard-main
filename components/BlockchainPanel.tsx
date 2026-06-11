@@ -30,13 +30,13 @@ export default function BlockchainPanel() {
         <div>
           <div className="flex items-center gap-2">
             <Link2 className="w-4 h-4 text-cyan-400" />
-            <h2 className="text-sm font-bold text-white">Blockchain Audit Trail</h2>
+            <h2 className="text-sm font-bold text-white">Registro de Auditoría Blockchain</h2>
           </div>
-          <p className="text-xs text-slate-500 mt-0.5">Immutable records — tamper-proof ledger</p>
+          <p className="text-xs text-slate-500 mt-0.5">Registros inmutables — libro contable a prueba de manipulaciones</p>
         </div>
         <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20">
           <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
-          <span className="text-[11px] font-semibold text-cyan-400">Chain Active</span>
+          <span className="text-[11px] font-semibold text-cyan-400">Cadena Activa</span>
         </div>
       </div>
 
@@ -64,21 +64,21 @@ export default function BlockchainPanel() {
               {/* Details grid */}
               <div className="grid grid-cols-2 gap-x-4 gap-y-1 mb-2">
                 <div>
-                  <span className="text-[10px] text-slate-600 uppercase tracking-wide">Project</span>
+                  <span className="text-[10px] text-slate-600 uppercase tracking-wide">Proyecto</span>
                   <p className="text-[11px] font-medium text-slate-300 truncate">{record.project}</p>
                 </div>
                 <div>
-                  <span className="text-[10px] text-slate-600 uppercase tracking-wide">Action</span>
+                  <span className="text-[10px] text-slate-600 uppercase tracking-wide">Acción</span>
                   <p className="text-[11px] font-medium text-slate-300">{record.action}</p>
                 </div>
                 <div>
-                  <span className="text-[10px] text-slate-600 uppercase tracking-wide">Amount</span>
+                  <span className="text-[10px] text-slate-600 uppercase tracking-wide">Monto</span>
                   <p className={`text-[11px] font-bold ${record.amount > 0 ? "text-emerald-400" : "text-slate-500"}`}>
                     {record.amount > 0 ? formatCurrency(record.amount) : "—"}
                   </p>
                 </div>
                 <div>
-                  <span className="text-[10px] text-slate-600 uppercase tracking-wide">Block #</span>
+                  <span className="text-[10px] text-slate-600 uppercase tracking-wide">Bloque #</span>
                   <p className="text-[11px] font-mono text-slate-400">{record.blockNumber.toLocaleString()}</p>
                 </div>
               </div>
@@ -89,13 +89,13 @@ export default function BlockchainPanel() {
                 {record.status === "Verified" && (
                   <div className="flex items-center gap-1 text-[10px] text-emerald-400">
                     <CheckCircle2 className="w-3 h-3" />
-                    <span className="font-semibold">Verified on Blockchain</span>
+                    <span className="font-semibold">Verificado en Blockchain</span>
                   </div>
                 )}
                 {record.status === "Flagged" && (
                   <div className="flex items-center gap-1 text-[10px] text-red-400">
                     <AlertCircle className="w-3 h-3" />
-                    <span className="font-semibold">Fraud Suspected</span>
+                    <span className="font-semibold">Fraude Sospechado</span>
                   </div>
                 )}
                 <button className="opacity-0 group-hover:opacity-100 transition-opacity">
@@ -112,15 +112,15 @@ export default function BlockchainPanel() {
         <div className="grid grid-cols-3 gap-3 text-center">
           <div>
             <p className="text-sm font-bold text-white">1,247</p>
-            <p className="text-[10px] text-slate-500">Total Records</p>
+            <p className="text-[10px] text-slate-500">Total Registros</p>
           </div>
           <div>
             <p className="text-sm font-bold text-emerald-400">98.7%</p>
-            <p className="text-[10px] text-slate-500">Verified</p>
+            <p className="text-[10px] text-slate-500">Verificados</p>
           </div>
           <div>
             <p className="text-sm font-bold text-cyan-400">18.4M</p>
-            <p className="text-[10px] text-slate-500">Latest Block</p>
+            <p className="text-[10px] text-slate-500">Último Bloque</p>
           </div>
         </div>
       </div>

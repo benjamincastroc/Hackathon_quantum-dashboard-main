@@ -19,20 +19,20 @@ export default function SettingsPanel() {
         <h1 className="text-lg font-bold text-white">Configuración</h1>
       </div>
       {[
-        { icon: Bell, title: "Notifications", items: [
-          { label: "Email alerts for critical events", on: true },
-          { label: "Push notifications for anomalies", on: true },
-          { label: "Weekly digest report", on: false },
+        { icon: Bell, title: "Notificaciones", items: [
+          { label: "Alertas por correo para eventos críticos", on: true },
+          { label: "Notificaciones push para anomalías", on: true },
+          { label: "Reporte semanal de resumen", on: false },
         ]},
-        { icon: Shield, title: "Security", items: [
-          { label: "Two-factor authentication", on: true },
-          { label: "Session timeout (30 min)", on: true },
-          { label: "API access logging", on: true },
+        { icon: Shield, title: "Seguridad", items: [
+          { label: "Autenticación de dos factores", on: true },
+          { label: "Tiempo de sesión (30 min)", on: true },
+          { label: "Registro de acceso a API", on: true },
         ]},
-        { icon: Globe, title: "Data & Privacy", items: [
-          { label: "Share anonymized data for AI training", on: false },
-          { label: "Blockchain audit trail", on: true },
-          { label: "Real-time monitoring", on: true },
+        { icon: Globe, title: "Datos y Privacidad", items: [
+          { label: "Compartir datos anónimos para entrenamiento de IA", on: false },
+          { label: "Registro de auditoría en blockchain", on: true },
+          { label: "Monitoreo en tiempo real", on: true },
         ]},
       ].map((section) => (
         <div key={section.title} className="rounded-xl border border-white/8 bg-[#0d1117] overflow-hidden">

@@ -3,7 +3,7 @@ import { Bell, AlertTriangle, Info, XCircle } from "lucide-react";
  
 const alerts = [
   { id: 1, title: "Pago anómalo detectado", desc: "MedSupply Inc — $92,400 excede el techo del contrato en 18%", time: "hace 2 min", severity: "critical", read: false },
-  { id: 2, title: "Cumplimiento del proveedor disminuido", desc: "La puntuación de MedSupply Inc cayó de 78% a 62% en últimos 30 días", time: "hace 14 min", severity: "high", read: false },
+  { id: 2, title: "Cumplimiento del proveedor disminuido", desc: "La puntuación de MedSupply Inc cayó de 78% a 62% en los últimos 30 días", time: "hace 14 min", severity: "high", read: false },
   { id: 3, title: "Nuevo contrato pendiente de revisión", desc: "TechSystems Ltd — IT Systems Upgrade $1.8M a la espera de aprobación", time: "hace 1 hora", severity: "medium", read: false },
   { id: 4, title: "Verificación de blockchain completada", desc: "BatchTX-2091 — 14 transacciones verificadas correctamente", time: "hace 3 horas", severity: "info", read: true },
   { id: 5, title: "Informe de auditoría listo", desc: "El informe de auditoría de infraestructura Q1 2024 está disponible para descargar", time: "hace 5 horas", severity: "info", read: true },
@@ -22,7 +22,7 @@ export default function AlertsPanel() {
       <div className="flex items-center gap-2">
         <Bell className="w-5 h-5 text-red-400" />
         <h1 className="text-lg font-bold text-white">Alerts</h1>
-        <span className="ml-2 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-red-500/20 text-red-400 border border-red-500/30 animate-pulse">3 unread</span>
+        <span className="ml-2 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-red-500/20 text-red-400 border border-red-500/30 animate-pulse">3 sin leer</span>
       </div>
       <div className="space-y-3">
         {alerts.map((a) => {

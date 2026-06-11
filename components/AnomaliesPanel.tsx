@@ -28,13 +28,13 @@ export default function AnomaliesPanel() {
         <div>
           <div className="flex items-center gap-2">
             <AlertTriangle className="w-4 h-4 text-orange-400" />
-            <h2 className="text-sm font-bold text-white">Detected Anomalies</h2>
+            <h2 className="text-sm font-bold text-white">Anomalías Detectadas</h2>
           </div>
-          <p className="text-xs text-slate-500 mt-0.5">{anomalies.length} active flags requiring review</p>
+          <p className="text-xs text-slate-500 mt-0.5">{anomalies.length} alertas activas que requieren revisión</p>
         </div>
         <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-orange-500/10 border border-orange-500/20">
           <span className="w-1.5 h-1.5 rounded-full bg-orange-400 animate-pulse" />
-          <span className="text-[11px] font-semibold text-orange-400">Live Detection</span>
+          <span className="text-[11px] font-semibold text-orange-400">Detección en Vivo</span>
         </div>
       </div>
 
@@ -93,7 +93,7 @@ export default function AnomaliesPanel() {
                   {anomaly.impact > 0 && (
                     <span className="flex items-center gap-1 text-[10px] font-semibold text-red-400 ml-auto">
                       <DollarSign className="w-3 h-3" />
-                      {formatCurrency(anomaly.impact)} at risk
+                      {formatCurrency(anomaly.impact)} en riesgo
                     </span>
                   )}
                 </div>
@@ -108,7 +108,7 @@ export default function AnomaliesPanel() {
       {/* Footer */}
       <div className="p-4 border-t border-blue-500/10">
         <button className="w-full text-xs text-blue-400 hover:text-blue-300 font-medium transition-colors flex items-center justify-center gap-1.5 py-1">
-          View All Anomalies
+          Ver Todas las Anomalías
           <ChevronRight className="w-3.5 h-3.5" />
         </button>
       </div>

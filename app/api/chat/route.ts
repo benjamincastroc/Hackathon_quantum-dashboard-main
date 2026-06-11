@@ -10,7 +10,7 @@ Tu rol es ayudar a auditores, funcionarios y organizaciones de transparencia a:
 - Interpretar métricas de riesgo y alertas del sistema
 - Sugerir acciones correctivas y mejores prácticas de auditoría
 
-Responde siempre en el idioma del usuario. Sé conciso, profesional y directo.`;
+Responde siempre en español. Sé conciso, profesional y directo.`;
 
 export async function POST(req: NextRequest) {
   try {

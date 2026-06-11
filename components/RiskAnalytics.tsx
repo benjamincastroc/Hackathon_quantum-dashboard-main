@@ -14,15 +14,15 @@ import { TrendingUp, Activity } from "lucide-react";
 import { weeklyRiskData } from "@/lib/data";
 import { cn } from "@/lib/utils";
 
-const filters = ["All Projects", "Infrastructure", "Health", "Education", "Transportation"] as const;
+const filters = ["Todos los Proyectos", "Infraestructura", "Salud", "Educación", "Transporte"] as const;
 type Filter = (typeof filters)[number];
 
 const filterKeyMap: Record<Filter, string> = {
-  "All Projects": "all",
-  Infrastructure: "infrastructure",
-  Health: "health",
-  Education: "education",
-  Transportation: "transportation",
+  "Todos los Proyectos": "all",
+  Infraestructura: "infrastructure",
+  Salud: "health",
+  Educación: "education",
+  Transporte: "transportation",
 };
 
 const colorMap: Record<string, string> = {
@@ -34,11 +34,11 @@ const colorMap: Record<string, string> = {
 };
 
 const labelMap: Record<string, string> = {
-  all: "All Projects",
-  infrastructure: "Infrastructure",
-  health: "Health",
-  education: "Education",
-  transportation: "Transportation",
+  all: "Todos los Proyectos",
+  infrastructure: "Infraestructura",
+  health: "Salud",
+  education: "Educación",
+  transportation: "Transporte",
 };
 
 interface CustomTooltipProps {
@@ -69,7 +69,7 @@ function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
 }
 
 export default function RiskAnalytics() {
-  const [activeFilter, setActiveFilter] = useState<Filter>("All Projects");
+  const [activeFilter, setActiveFilter] = useState<Filter>("Todos los Proyectos");
   const activeKey = filterKeyMap[activeFilter];
   const color = colorMap[activeKey];
 
@@ -80,16 +80,16 @@ export default function RiskAnalytics() {
         <div>
           <div className="flex items-center gap-2 mb-1">
             <Activity className="w-4 h-4 text-blue-400" />
-            <h2 className="text-sm font-bold text-white">Government Project Risk Evolution</h2>
+            <h2 className="text-sm font-bold text-white">Evolución del Riesgo en Proyectos Gubernamentales</h2>
           </div>
-          <p className="text-xs text-slate-500">Weekly corruption risk scores — 12-week rolling window</p>
+          <p className="text-xs text-slate-500">Puntuaciones de riesgo de corrupción semanales — ventana de 12 semanas</p>
         </div>
 
         {/* Average badge */}
         <div className="flex items-center gap-2">
           <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-500/10 border border-red-500/20">
             <TrendingUp className="w-3.5 h-3.5 text-red-400" />
-            <span className="text-xs font-semibold text-red-400">Avg Risk: 71/100</span>
+            <span className="text-xs font-semibold text-red-400">Riesgo Prom: 71/100</span>
           </div>
         </div>
       </div>
@@ -143,8 +143,8 @@ export default function RiskAnalytics() {
             />
             <Tooltip content={<CustomTooltip />} />
 
-            {activeFilter === "All Projects" ? (
-              /* Show all lines when "All Projects" is selected */
+            {activeFilter === "Todos los Proyectos" ? (
+              /* Mostrar todas las líneas cuando se selecciona "Todos los Proyectos" */
               <>
                 {Object.entries(colorMap)
                   .filter(([k]) => k !== "all")
@@ -178,7 +178,7 @@ export default function RiskAnalytics() {
       </div>
 
       {/* Legend row */}
-      {activeFilter === "All Projects" && (
+      {activeFilter === "Todos los Proyectos" && (
         <div className="flex items-center gap-4 mt-4 flex-wrap">
           {Object.entries(colorMap)
             .filter(([k]) => k !== "all")
