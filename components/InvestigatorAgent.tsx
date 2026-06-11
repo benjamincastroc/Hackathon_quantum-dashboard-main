@@ -7,10 +7,15 @@ import {
   AlertTriangle,
   ExternalLink,
   Loader2,
-  ChevronRight,
   FileSearch,
   ShieldAlert,
   CheckCircle2,
+  Link2,
+  Hash,
+  Fingerprint,
+  Copy,
+  Check,
+  FileText,
 } from "lucide-react";
 
 interface Step {
@@ -21,12 +26,26 @@ interface Step {
 interface Source {
   title: string;
   url: string;
+  content: string;
+  sha256: string;
+  isPdf?: boolean;
+  pages?: number;
+  sizeBytes?: number;
+  docId?: string;
 }
 
 interface Result {
   report: string;
   steps: Step[];
   sources: Source[];
+  investigationId?: string;
+}
+
+interface StampState {
+  status: "idle" | "loading" | "done" | "error";
+  txHash?: string;
+  explorerUrl?: string;
+  error?: string;
 }
 
 function ReportContent({ content }: { content: string }) {
@@ -75,6 +94,148 @@ function ReportContent({ content }: { content: string }) {
           />
         );
       })}
+    </div>
+  );
+}
+
+function CopyButton({ text }: { text: string }) {
+  const [copied, setCopied] = useState(false);
+  const copy = () => {
+    navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
+  return (
+    <button onClick={copy} className="text-slate-600 hover:text-slate-400 transition-colors flex-shrink-0">
+      {copied ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+    </button>
+  );
+}
+
+function DocumentCard({ source, index }: { source: Source; index: number }) {
+  const [stamp, setStamp] = useState<StampState>({ status: "idle" });
+
+  const handleStamp = async () => {
+    if (!source.docId) return;
+    setStamp({ status: "loading" });
+    try {
+      const res = await fetch("/api/stamp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ documentId: source.docId }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setStamp({ status: "error", error: data.error });
+      } else {
+        setStamp({
+          status: "done",
+          txHash: data.txHash,
+          explorerUrl: data.explorerUrl,
+        });
+      }
+    } catch {
+      setStamp({ status: "error", error: "Error de conexión" });
+    }
+  };
+
+  return (
+    <div className="rounded-lg border border-white/8 bg-white/2 p-3 space-y-2">
+      {/* Title + URL */}
+      <div className="flex items-start justify-between gap-2">
+        <div className="min-w-0 flex-1">
+          <div className="flex items-center gap-1.5 mb-0.5">
+            <p className="text-[11px] font-semibold text-slate-300 truncate">{source.title}</p>
+            {source.isPdf && (
+              <span className="flex-shrink-0 flex items-center gap-0.5 text-[9px] font-bold text-red-300 bg-red-500/15 border border-red-500/20 px-1.5 py-0.5 rounded">
+                <FileText className="w-2.5 h-2.5" />
+                PDF {source.pages ? `· ${source.pages}p` : ""}{source.sizeBytes ? ` · ${(source.sizeBytes / 1024).toFixed(0)}KB` : ""}
+              </span>
+            )}
+          </div>
+          <a
+            href={source.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[10px] text-blue-400 hover:text-blue-300 flex items-center gap-1 transition-colors"
+          >
+            <ExternalLink className="w-2.5 h-2.5 flex-shrink-0" />
+            <span className="truncate">{source.url}</span>
+          </a>
+        </div>
+        <span className="text-[10px] text-slate-600 flex-shrink-0">#{index + 1}</span>
+      </div>
+
+      {/* SHA-256 */}
+      <div className="rounded bg-black/30 border border-white/5 px-2.5 py-1.5">
+        <div className="flex items-center gap-1.5 mb-1">
+          <Hash className="w-3 h-3 text-cyan-400" />
+          <span className="text-[9px] font-semibold text-cyan-400 uppercase tracking-wider">SHA-256</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <code className="text-[10px] text-slate-400 font-mono truncate flex-1">
+            {source.sha256}
+          </code>
+          <CopyButton text={source.sha256} />
+        </div>
+      </div>
+
+      {/* Syscoin stamp */}
+      {stamp.status === "idle" && (
+        <button
+          onClick={handleStamp}
+          disabled={!source.docId}
+          className="w-full flex items-center justify-center gap-1.5 text-[11px] font-semibold text-purple-300 bg-purple-500/10 hover:bg-purple-500/20 border border-purple-500/20 rounded-lg py-1.5 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+        >
+          <Fingerprint className="w-3.5 h-3.5" />
+          Sellar en Syscoin Blockchain
+        </button>
+      )}
+
+      {stamp.status === "loading" && (
+        <div className="flex items-center justify-center gap-2 text-[11px] text-purple-400 py-1.5">
+          <Loader2 className="w-3.5 h-3.5 animate-spin" />
+          Enviando transacción...
+        </div>
+      )}
+
+      {stamp.status === "done" && stamp.txHash && (
+        <div className="rounded-lg border border-emerald-500/20 bg-emerald-500/5 p-2.5 space-y-1.5">
+          <div className="flex items-center gap-1.5">
+            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+            <span className="text-[11px] font-bold text-emerald-400">Sellado en Syscoin NEVM</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <code className="text-[10px] text-slate-400 font-mono truncate flex-1">{stamp.txHash}</code>
+            <CopyButton text={stamp.txHash} />
+          </div>
+          <a
+            href={stamp.explorerUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1 text-[10px] text-emerald-400 hover:text-emerald-300 transition-colors"
+          >
+            <Link2 className="w-3 h-3" />
+            Ver en explorador Tanenbaum
+          </a>
+        </div>
+      )}
+
+      {stamp.status === "error" && (
+        <div className="rounded-lg border border-orange-500/20 bg-orange-500/5 p-2 flex items-start gap-2">
+          <AlertTriangle className="w-3.5 h-3.5 text-orange-400 flex-shrink-0 mt-0.5" />
+          <div>
+            <p className="text-[10px] font-semibold text-orange-400">No se pudo sellar</p>
+            <p className="text-[10px] text-slate-500 mt-0.5">{stamp.error}</p>
+            <button
+              onClick={() => setStamp({ status: "idle" })}
+              className="text-[10px] text-orange-400 hover:underline mt-1"
+            >
+              Reintentar
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -137,7 +298,7 @@ export default function InvestigatorAgent() {
           </div>
           <div>
             <h2 className="text-sm font-bold text-white">Agente Investigador</h2>
-            <p className="text-[10px] text-slate-500">Investigación autónoma con búsqueda web en tiempo real</p>
+            <p className="text-[10px] text-slate-500">Investigación autónoma · Huella SHA-256 · Blockchain Syscoin</p>
           </div>
         </div>
         <div className="flex items-center gap-1.5 text-[10px] text-orange-400 bg-orange-500/10 px-2.5 py-1 rounded-full border border-orange-500/20">
@@ -180,7 +341,6 @@ export default function InvestigatorAgent() {
             </div>
           </div>
 
-          {/* Example projects */}
           {!result && !loading && (
             <div>
               <p className="text-[10px] text-slate-600 mb-1.5">Ejemplos rápidos:</p>
@@ -200,7 +360,7 @@ export default function InvestigatorAgent() {
           )}
         </form>
 
-        {/* Loading state */}
+        {/* Loading */}
         {loading && (
           <div className="rounded-xl border border-white/8 bg-white/3 p-4 space-y-3">
             <div className="flex items-center gap-2">
@@ -209,13 +369,16 @@ export default function InvestigatorAgent() {
             </div>
             <div className="space-y-2">
               {[
-                "Buscando información pública del proyecto...",
-                "Analizando contratos y licitaciones...",
-                "Verificando empresas contratistas...",
-                "Detectando irregularidades...",
+                "Buscando en portales oficiales del Estado...",
+                "Analizando contratos y licitaciones (SEACE, OSCE)...",
+                "Descargando y extrayendo texto de documentos PDF...",
+                "Generando huellas SHA-256 de cada documento...",
               ].map((step, i) => (
                 <div key={i} className="flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 rounded-full bg-orange-500/40 animate-pulse" style={{ animationDelay: `${i * 300}ms` }} />
+                  <div
+                    className="w-1.5 h-1.5 rounded-full bg-orange-500/40 animate-pulse"
+                    style={{ animationDelay: `${i * 300}ms` }}
+                  />
                   <span className="text-[11px] text-slate-500">{step}</span>
                 </div>
               ))}
@@ -237,7 +400,7 @@ export default function InvestigatorAgent() {
         {/* Results */}
         {result && (
           <div className="space-y-4 animate-enter">
-            {/* Search steps */}
+            {/* Steps */}
             {result.steps.length > 0 && (
               <div className="rounded-xl border border-white/8 bg-white/3 p-3">
                 <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-2">
@@ -259,36 +422,35 @@ export default function InvestigatorAgent() {
               <div className="flex items-center gap-2 mb-3 pb-2 border-b border-white/8">
                 <ShieldAlert className="w-4 h-4 text-orange-400" />
                 <p className="text-xs font-bold text-white">Informe de Investigación</p>
-                <span className="ml-auto text-[10px] text-slate-500">{project}</span>
+                {result.investigationId && (
+                  <span className="ml-auto text-[9px] text-slate-600 font-mono truncate max-w-[120px]">
+                    ID: {result.investigationId.slice(0, 8)}…
+                  </span>
+                )}
               </div>
               <ReportContent content={result.report ?? ""} />
             </div>
 
-            {/* Sources */}
+            {/* Documents + Blockchain */}
             {result.sources.length > 0 && (
-              <div className="rounded-xl border border-white/8 bg-white/3 p-3">
-                <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-2">
-                  Fuentes consultadas ({result.sources.length})
-                </p>
-                <div className="space-y-1.5">
+              <div className="rounded-xl border border-purple-500/15 bg-purple-500/5 p-4">
+                <div className="flex items-center gap-2 mb-3 pb-2 border-b border-purple-500/10">
+                  <Fingerprint className="w-4 h-4 text-purple-400" />
+                  <p className="text-xs font-bold text-white">Documentos con Huella Digital</p>
+                  <span className="ml-auto text-[10px] text-slate-500">{result.sources.length} fuentes</span>
+                </div>
+                <div className="space-y-3">
                   {result.sources.map((source, i) => (
-                    <a
-                      key={i}
-                      href={source.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-2 text-[11px] text-blue-400 hover:text-blue-300 transition-colors group"
-                    >
-                      <ChevronRight className="w-3 h-3 flex-shrink-0" />
-                      <span className="truncate flex-1">{source.url}</span>
-                      <ExternalLink className="w-3 h-3 flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity" />
-                    </a>
+                    <DocumentCard key={i} source={source} index={i} />
                   ))}
                 </div>
+                <p className="text-[10px] text-slate-600 mt-3 text-center">
+                  Cada documento tiene un hash SHA-256 único. Al sellar en Syscoin NEVM (testnet Tanenbaum), el hash queda registrado de forma inmutable en la blockchain.
+                </p>
               </div>
             )}
 
-            {/* New investigation button */}
+            {/* Nueva investigación */}
             <button
               onClick={() => { setResult(null); setProject(""); }}
               className="w-full text-xs text-slate-500 hover:text-slate-300 transition-colors py-2 border border-white/8 rounded-lg hover:bg-white/5"
