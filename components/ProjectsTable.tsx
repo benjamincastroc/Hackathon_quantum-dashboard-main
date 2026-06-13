@@ -1,17 +1,21 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronUp, ChevronDown, ExternalLink, Search } from "lucide-react";
-import { projects } from "@/lib/data";
-import {
-  formatCurrency,
-  getRiskBadge,
-  getStatusStyles,
-  getStatusDot,
-} from "@/lib/utils";
-import type { Project, ProjectStatus } from "@/lib/data";
+import { ChevronUp, ChevronDown, ExternalLink, Search, Sparkles } from "lucide-react";
+import { formatCurrency, getRiskBadge, getStatusStyles, getStatusDot } from "@/lib/utils";
+import { useInvestigationData } from "@/hooks/useInvestigationData";
+import EmptyInvestigation from "@/components/EmptyInvestigation";
+import type { ProjectStatus } from "@/lib/data";
 
-type SortKey = keyof Pick<Project, "name" | "budget" | "executed" | "progress" | "risk">;
+type SortKey = "name" | "budget" | "executed" | "progress" | "risk";
+
+const statusLabels: Record<string, string> = {
+  All: "Todos",
+  Healthy: "Saludable",
+  Review: "Revisión",
+  Warning: "Advertencia",
+  Critical: "Crítico",
+};
 
 export default function ProjectsTable() {
   const [search, setSearch] = useState("");
@@ -19,10 +23,31 @@ export default function ProjectsTable() {
   const [sortDir, setSortDir] = useState<"asc" | "desc">("desc");
   const [statusFilter, setStatusFilter] = useState<ProjectStatus | "All">("All");
 
+  const inv = useInvestigationData();
+
+  const projects = inv?.project
+    ? [
+        {
+          id: 0,
+          name: inv.project.name,
+          agency: inv.project.agency,
+          budget: inv.project.budget,
+          executed: inv.project.executed,
+          progress: inv.project.progress,
+          risk: inv.project.risk,
+          status: inv.project.status,
+          contractor: inv.project.contractor,
+          location: inv.project.location,
+        },
+      ]
+    : [];
+
   const handleSort = (key: SortKey) => {
     if (sortKey === key) setSortDir(sortDir === "asc" ? "desc" : "asc");
     else { setSortKey(key); setSortDir("desc"); }
   };
+
+  const statusOptions: (ProjectStatus | "All")[] = ["All", "Healthy", "Review", "Warning", "Critical"];
 
   const filtered = projects
     .filter((p) => {
@@ -38,25 +63,22 @@ export default function ProjectsTable() {
       return mul * ((a[sortKey] as number) - (b[sortKey] as number));
     });
 
-  const statusOptions: (ProjectStatus | "All")[] = ["All", "Healthy", "Review", "Warning", "Critical"];
-  const statusLabels: Record<string, string> = {
-    All: "Todos",
-    Healthy: "Saludable",
-    Review: "Revisión",
-    Warning: "Advertencia",
-    Critical: "Crítico",
-  };
-
   return (
     <section className="glass rounded-xl border border-blue-500/10">
-      {/* Header */}
       <div className="p-4 sm:p-5 border-b border-blue-500/10 space-y-3">
-        <div className="flex items-center justify-between gap-2">
+        <div className="flex items-center justify-between gap-2 flex-wrap">
           <div>
-            <h2 className="text-sm font-bold text-white">Monitoreo de Proyectos</h2>
+            <div className="flex items-center gap-2">
+              <h2 className="text-sm font-bold text-white">Monitoreo de Proyectos</h2>
+              {inv && (
+                <span className="flex items-center gap-1 text-[10px] font-semibold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full">
+                  <Sparkles className="w-2.5 h-2.5" />
+                  {inv.projectName}
+                </span>
+              )}
+            </div>
             <p className="text-xs text-slate-500 mt-0.5">{filtered.length} proyectos mostrados</p>
           </div>
-          {/* Search */}
           <div className="relative">
             <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-500" />
             <input
@@ -68,7 +90,6 @@ export default function ProjectsTable() {
             />
           </div>
         </div>
-        {/* Status filters — scrollable row on small screens */}
         <div className="flex gap-1 overflow-x-auto pb-0.5">
           {statusOptions.map((s) => (
             <button
@@ -86,133 +107,114 @@ export default function ProjectsTable() {
         </div>
       </div>
 
-      {/* Table */}
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm">
-          <thead>
-            <tr className="border-b border-white/5">
-              {[
-                { label: "Proyecto", key: "name" as SortKey },
-                { label: "Entidad", key: null },
-                { label: "Presupuesto", key: "budget" as SortKey },
-                { label: "Ejecutado %", key: "executed" as SortKey },
-                { label: "Físico %", key: "progress" as SortKey },
-                { label: "Riesgo", key: "risk" as SortKey },
-                { label: "Estado", key: null },
-                { label: "", key: null },
-              ].map((col) => (
-                <th
-                  key={col.label}
-                  className="text-left px-4 py-3 text-[11px] font-semibold text-slate-500 uppercase tracking-wider"
-                >
-                  {col.key ? (
-                    <button
-                      onClick={() => handleSort(col.key!)}
-                      className="flex items-center gap-1 hover:text-slate-300 transition-colors"
-                    >
-                      {col.label}
-                      {sortKey === col.key ? (
-                        sortDir === "desc" ? (
-                          <ChevronDown className="w-3 h-3 text-blue-400" />
+      {!inv ? (
+        <EmptyInvestigation message="Investiga un proyecto para ver su estado, presupuesto y métricas de riesgo." />
+      ) : (
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-white/5">
+                {[
+                  { label: "Proyecto", key: "name" as SortKey },
+                  { label: "Entidad", key: null },
+                  { label: "Presupuesto", key: "budget" as SortKey },
+                  { label: "Ejecutado %", key: "executed" as SortKey },
+                  { label: "Físico %", key: "progress" as SortKey },
+                  { label: "Riesgo", key: "risk" as SortKey },
+                  { label: "Estado", key: null },
+                  { label: "", key: null },
+                ].map((col) => (
+                  <th
+                    key={col.label}
+                    className="text-left px-4 py-3 text-[11px] font-semibold text-slate-500 uppercase tracking-wider"
+                  >
+                    {col.key ? (
+                      <button
+                        onClick={() => handleSort(col.key!)}
+                        className="flex items-center gap-1 hover:text-slate-300 transition-colors"
+                      >
+                        {col.label}
+                        {sortKey === col.key ? (
+                          sortDir === "desc" ? (
+                            <ChevronDown className="w-3 h-3 text-blue-400" />
+                          ) : (
+                            <ChevronUp className="w-3 h-3 text-blue-400" />
+                          )
                         ) : (
-                          <ChevronUp className="w-3 h-3 text-blue-400" />
-                        )
-                      ) : (
-                        <ChevronDown className="w-3 h-3 opacity-30" />
-                      )}
-                    </button>
-                  ) : (
-                    col.label
-                  )}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {filtered.map((project, i) => (
-              <tr
-                key={project.id}
-                className="border-b border-white/[0.04] hover:bg-white/[0.025] transition-colors group"
-                style={{ animationDelay: `${i * 40}ms` }}
-              >
-                {/* Project */}
-                <td className="px-4 py-3.5">
-                  <div>
-                    <p className="text-xs font-semibold text-slate-200 group-hover:text-white transition-colors">
-                      {project.name}
-                    </p>
-                    <p className="text-[10px] text-slate-600 mt-0.5">{project.location}</p>
-                  </div>
-                </td>
-
-                {/* Agency */}
-                <td className="px-4 py-3.5">
-                  <p className="text-xs text-slate-400 max-w-[160px] truncate">{project.agency}</p>
-                </td>
-
-                {/* Budget */}
-                <td className="px-4 py-3.5">
-                  <p className="text-xs font-semibold text-slate-300">{formatCurrency(project.budget)}</p>
-                </td>
-
-                {/* Executed */}
-                <td className="px-4 py-3.5">
-                  <div className="flex items-center gap-2">
-                    <div className="flex-1 h-1.5 bg-white/10 rounded-full overflow-hidden w-16">
-                      <div
-                        className={`h-full rounded-full transition-all ${
-                          project.executed >= 90
-                            ? "bg-red-500"
-                            : project.executed >= 70
-                            ? "bg-orange-500"
-                            : "bg-blue-500"
-                        }`}
-                        style={{ width: `${project.executed}%` }}
-                      />
-                    </div>
-                    <span className="text-xs text-slate-400 w-8 text-right">{project.executed}%</span>
-                  </div>
-                </td>
-
-                {/* Physical Progress */}
-                <td className="px-4 py-3.5">
-                  <div className="flex items-center gap-2">
-                    <div className="flex-1 h-1.5 bg-white/10 rounded-full overflow-hidden w-16">
-                      <div
-                        className="h-full rounded-full bg-cyan-500 transition-all"
-                        style={{ width: `${project.progress}%` }}
-                      />
-                    </div>
-                    <span className="text-xs text-slate-400 w-8 text-right">{project.progress}%</span>
-                  </div>
-                </td>
-
-                {/* Risk Score */}
-                <td className="px-4 py-3.5">
-                  <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold ${getRiskBadge(project.risk)}`}>
-                    {project.risk}
-                  </span>
-                </td>
-
-                {/* Status */}
-                <td className="px-4 py-3.5">
-                  <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold ${getStatusStyles(project.status)}`}>
-                    <span className={`w-1.5 h-1.5 rounded-full ${getStatusDot(project.status)}`} />
-                    {statusLabels[project.status] ?? project.status}
-                  </span>
-                </td>
-
-                {/* Action */}
-                <td className="px-4 py-3.5">
-                  <button className="opacity-0 group-hover:opacity-100 transition-opacity p-1.5 rounded-lg hover:bg-white/10">
-                    <ExternalLink className="w-3.5 h-3.5 text-slate-400" />
-                  </button>
-                </td>
+                          <ChevronDown className="w-3 h-3 opacity-30" />
+                        )}
+                      </button>
+                    ) : (
+                      col.label
+                    )}
+                  </th>
+                ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {filtered.map((project, i) => (
+                <tr
+                  key={project.id}
+                  className="border-b border-emerald-500/20 bg-emerald-500/5 hover:bg-emerald-500/8 transition-colors group"
+                  style={{ animationDelay: `${i * 40}ms` }}
+                >
+                  <td className="px-4 py-3.5">
+                    <div>
+                      <p className="text-xs font-semibold text-slate-200 group-hover:text-white transition-colors">
+                        {project.name}
+                      </p>
+                      <p className="text-[10px] text-slate-600 mt-0.5">{project.location}</p>
+                    </div>
+                  </td>
+                  <td className="px-4 py-3.5">
+                    <p className="text-xs text-slate-400 max-w-[160px] truncate">{project.agency}</p>
+                  </td>
+                  <td className="px-4 py-3.5">
+                    <p className="text-xs font-semibold text-slate-300">{formatCurrency(project.budget)}</p>
+                  </td>
+                  <td className="px-4 py-3.5">
+                    <div className="flex items-center gap-2">
+                      <div className="flex-1 h-1.5 bg-white/10 rounded-full overflow-hidden w-16">
+                        <div
+                          className={`h-full rounded-full transition-all ${
+                            project.executed >= 90 ? "bg-red-500" : project.executed >= 70 ? "bg-orange-500" : "bg-blue-500"
+                          }`}
+                          style={{ width: `${project.executed}%` }}
+                        />
+                      </div>
+                      <span className="text-xs text-slate-400 w-8 text-right">{project.executed}%</span>
+                    </div>
+                  </td>
+                  <td className="px-4 py-3.5">
+                    <div className="flex items-center gap-2">
+                      <div className="flex-1 h-1.5 bg-white/10 rounded-full overflow-hidden w-16">
+                        <div className="h-full rounded-full bg-cyan-500 transition-all" style={{ width: `${project.progress}%` }} />
+                      </div>
+                      <span className="text-xs text-slate-400 w-8 text-right">{project.progress}%</span>
+                    </div>
+                  </td>
+                  <td className="px-4 py-3.5">
+                    <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold ${getRiskBadge(project.risk)}`}>
+                      {project.risk}
+                    </span>
+                  </td>
+                  <td className="px-4 py-3.5">
+                    <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold ${getStatusStyles(project.status)}`}>
+                      <span className={`w-1.5 h-1.5 rounded-full ${getStatusDot(project.status)}`} />
+                      {statusLabels[project.status] ?? project.status}
+                    </span>
+                  </td>
+                  <td className="px-4 py-3.5">
+                    <button className="opacity-0 group-hover:opacity-100 transition-opacity p-1.5 rounded-lg hover:bg-white/10">
+                      <ExternalLink className="w-3.5 h-3.5 text-slate-400" />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </section>
   );
 }

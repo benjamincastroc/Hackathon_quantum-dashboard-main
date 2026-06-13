@@ -1,52 +1,20 @@
 import Groq from "groq-sdk";
+import OpenAI from "openai";
 import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 import { sha256 } from "@/lib/blockchain";
 import { isPdfUrl, extractPdf } from "@/lib/pdf";
+import { withRetry } from "@/lib/retry";
 
 export const maxDuration = 60;
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
-const AGENT_PROMPT = `Eres un agente investigador especializado en auditoría anticorrupción gubernamental.
-Tu tarea es investigar un proyecto gubernamental específico usando las herramientas disponibles.
+const openrouter = new OpenAI({
+  baseURL: "https://openrouter.ai/api/v1",
+  apiKey: process.env.OPENROUTER_API_KEY ?? "",
+});
 
-Las búsquedas están restringidas a portales oficiales del Estado (Contraloría, OSCE, SEACE, MEF, Transparencia Económica, datos abiertos) y medios de periodismo de investigación reconocidos. Prioriza siempre estas fuentes primarias.
-
-Proceso obligatorio:
-1. Realiza AL MENOS 3 búsquedas con diferentes términos (nombre del proyecto, empresa contratista, irregularidades, presupuesto, licitación, RUC, SEACE)
-2. Analiza contratos, pagos, proveedores y beneficiarios encontrados en fuentes oficiales
-3. Identifica irregularidades: sobrecostos, pagos sin obra, empresas fantasma, conflictos de interés, licitaciones amañadas
-4. Documenta la fuente exacta (URL del portal oficial) de cada hallazgo
-
-Al terminar, entrega un informe en español con estas secciones exactas:
-## Resumen Ejecutivo
-## Irregularidades Detectadas
-## Empresas y Personas Involucradas
-## Fuentes Consultadas
-## Nivel de Riesgo (Crítico / Alto / Medio / Bajo)
-
-Sé metódico, cita datos concretos (montos, fechas, nombres) cuando los encuentres.`;
-
-const tools: Groq.Chat.ChatCompletionTool[] = [
-  {
-    type: "function",
-    function: {
-      name: "search_web",
-      description: "Busca información en internet sobre el proyecto gubernamental investigado",
-      parameters: {
-        type: "object",
-        properties: {
-          query: {
-            type: "string",
-            description: "Términos de búsqueda específicos en español o inglés",
-          },
-        },
-        required: ["query"],
-      },
-    },
-  },
-];
 
 interface RawTavilyResult {
   title: string;
@@ -95,7 +63,7 @@ async function searchWeb(query: string, restrictDomains = true): Promise<string>
       api_key: apiKey,
       query,
       search_depth: "basic",
-      max_results: 5,
+      max_results: 4,
       include_answer: true,
       include_raw_content: false,
     };
@@ -116,9 +84,9 @@ async function searchWeb(query: string, restrictDomains = true): Promise<string>
     const data = await res.json();
     lastTavilyResults = data.results ?? [];
 
-    const answer = data.answer ? `**Resumen:** ${data.answer}\n\n` : "";
+    const answer = data.answer ? `**Resumen:** ${data.answer.slice(0, 300)}\n\n` : "";
     const results = lastTavilyResults
-      .map((r) => `**${r.title}**\nURL: ${r.url}\n${r.content?.slice(0, 600)}`)
+      .map((r) => `**${r.title}**\nURL: ${r.url}\n${r.content?.slice(0, 250)}`)
       .join("\n\n---\n\n");
 
     console.log("[Agent] Tavily resultados:", lastTavilyResults.length);
@@ -154,140 +122,145 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Se requiere el nombre del proyecto" }, { status: 400 });
     }
 
-    const messages: Groq.Chat.ChatCompletionMessageParam[] = [
-      { role: "system", content: AGENT_PROMPT },
-      {
-        role: "user",
-        content: `Investiga este proyecto gubernamental y encuentra todas las irregularidades posibles:\n\n**Proyecto:** ${project}\n\nSé exhaustivo. Usa múltiples búsquedas con distintos ángulos.`,
-      },
-    ];
-
+    // ── FASE 1: generar queries y ejecutar búsquedas directamente ─────────
     const steps: AgentStep[] = [];
     const searchedSources: SearchedSource[] = [];
 
-    for (let i = 0; i < 6; i++) {
-      const forceSearch = steps.length < 3;
+    const queryResponse = await withRetry(() =>
+      groq.chat.completions.create({
+        model: "llama-3.1-8b-instant",
+        messages: [
+          {
+            role: "system",
+            content: "Eres un investigador anticorrupción. Genera consultas de búsqueda web específicas para investigar el proyecto dado. Responde SOLO con un array JSON de strings, sin texto adicional. Ejemplo: [\"query 1\",\"query 2\",\"query 3\",\"query 4\"]",
+          },
+          {
+            role: "user",
+            content: `Genera 4 consultas de búsqueda para investigar irregularidades en el proyecto gubernamental: "${project}". Cubre: nombre del proyecto + irregularidades, contratistas/empresas, presupuesto/licitación SEACE, contraloría/auditoría.`,
+          },
+        ],
+        max_tokens: 256,
+        temperature: 0.2,
+      })
+    );
 
-      const response = await groq.chat.completions.create({
-        model: "llama-3.3-70b-versatile",
-        messages,
-        tools,
-        tool_choice: forceSearch ? "required" : "auto",
-        max_tokens: 2048,
-        temperature: 0.3,
-      });
+    const queriesRaw = queryResponse.choices[0].message.content ?? "[]";
+    const queriesMatch = queriesRaw.match(/\[[\s\S]*?\]/);
+    let queries: string[] = queriesMatch
+      ? (JSON.parse(queriesMatch[0]) as string[])
+      : [`${project} irregularidades`, `${project} contratistas SEACE`, `${project} contraloría auditoría`, `${project} presupuesto licitación`];
+    queries = queries.slice(0, 4);
 
-      const choice = response.choices[0];
-      const message = choice.message;
-      console.log(`[Agent] Iteración ${i}, finish_reason: ${choice.finish_reason}`);
+    console.log("[Agent] Queries generadas:", queries);
 
-      messages.push(message as Groq.Chat.ChatCompletionMessageParam);
-
-      if (choice.finish_reason === "stop") {
-        const report = message.content ?? "";
-
-        // Extraer contenido completo de PDFs en paralelo
-        await Promise.all(
-          searchedSources.map(async (src) => {
-            if (isPdfUrl(src.url)) {
-              const pdf = await extractPdf(src.url);
-              if (pdf) {
-                src.content = pdf.content;
-                src.isPdf = true;
-                src.pages = pdf.pages;
-                src.sizeBytes = pdf.sizeBytes;
-                console.log(`[Agent] PDF procesado: ${src.url} (${pdf.pages}p, ${(pdf.sizeBytes/1024).toFixed(0)}KB)`);
-              }
-            }
-          })
-        );
-
-        // Calcular sha256 sobre el contenido completo (PDF o snippet)
-        const sources: AgentSource[] = searchedSources.map((s) => ({
-          ...s,
-          sha256: sha256(s.content || s.url),
-        }));
-
-        let investigationId: string | undefined;
-        try {
-          const { data: inv } = await supabase
-            .from("investigations")
-            .insert({ project_name: project, report, steps })
-            .select("id")
-            .single();
-
-          if (inv?.id) {
-            investigationId = inv.id;
-
-            const docs = sources.map((s) => ({
-              investigation_id: inv.id,
-              url: s.url,
-              title: s.title,
-              content: s.content,
-              sha256: s.sha256,
-              is_pdf: s.isPdf ?? false,
-              pdf_pages: s.pages ?? null,
-              pdf_size_bytes: s.sizeBytes ?? null,
-            }));
-
-            const { data: savedDocs } = await supabase
-              .from("documents")
-              .insert(docs)
-              .select("id, url");
-
-            if (savedDocs) {
-              for (const src of sources) {
-                const match = savedDocs.find((d) => d.url === src.url);
-                if (match) src.docId = match.id;
-              }
-            }
-          }
-        } catch (dbErr) {
-          console.error("[Agent] Supabase error (no crítico):", dbErr);
-        }
-
-        return NextResponse.json({ report, steps, sources, investigationId });
+    for (const query of queries) {
+      steps.push({ type: "search", content: query });
+      let results = await searchWeb(query, true);
+      if (lastTavilyResults.length === 0) {
+        console.log("[Agent] Sin resultados gov, ampliando...");
+        results = await searchWeb(query, false);
       }
-
-      if (choice.finish_reason === "tool_calls" && message.tool_calls) {
-        for (const toolCall of message.tool_calls) {
-          if (toolCall.function.name === "search_web") {
-            const args = JSON.parse(toolCall.function.arguments) as { query: string };
-            steps.push({ type: "search", content: args.query });
-
-            let result = await searchWeb(args.query, true);
-
-            // Si la búsqueda restringida no retornó resultados, ampliar sin restricción
-            if (lastTavilyResults.length === 0) {
-              console.log("[Agent] Sin resultados en dominios gov, ampliando búsqueda...");
-              result = await searchWeb(args.query, false);
-            }
-
-            // Capturar fuentes con contenido real desde Tavily
-            for (const raw of lastTavilyResults) {
-              if (!searchedSources.find((s) => s.url === raw.url)) {
-                searchedSources.push({
-                  title: raw.title,
-                  url: raw.url,
-                  content: raw.content ?? "",
-                });
-              }
-            }
-
-            messages.push({
-              role: "tool",
-              content: result,
-              tool_call_id: toolCall.id,
-            });
-          }
+      console.log(`[Agent] "${query}" → ${lastTavilyResults.length} resultados`);
+      for (const raw of lastTavilyResults) {
+        if (!searchedSources.find((s) => s.url === raw.url)) {
+          searchedSources.push({ title: raw.title, url: raw.url, content: raw.content ?? "" });
         }
       }
+      void results;
     }
 
-    console.log("[Agent] Límite de iteraciones alcanzado");
-    return NextResponse.json({ error: "El agente alcanzó el límite de iteraciones" }, { status: 500 });
+    // ── FASE 2: informe final con OpenRouter (Gemini Flash) ───────────────
+    const sourceSummary = searchedSources
+      .slice(0, 10)
+      .map((s, i) => `[${i + 1}] ${s.title}\nURL: ${s.url}\n${s.content.slice(0, 500)}`)
+      .join("\n\n");
+
+    const reportResponse = await withRetry(() =>
+      openrouter.chat.completions.create({
+        model: "openai/gpt-oss-120b:free",
+        messages: [
+          {
+            role: "system",
+            content: "Eres un auditor anticorrupción experto. Redacta informes detallados en español basándote en las fuentes proporcionadas. Sé concreto con montos, fechas, nombres y RUCs cuando aparezcan.",
+          },
+          {
+            role: "user",
+            content: `Con base en estas fuentes sobre el proyecto "${project}", redacta un informe de auditoría anticorrupción con exactamente estas secciones:\n\n## Resumen Ejecutivo\n## Irregularidades Detectadas\n## Empresas y Personas Involucradas\n## Fuentes Consultadas\n## Nivel de Riesgo (Crítico / Alto / Medio / Bajo)\n\nFuentes encontradas:\n\n${sourceSummary}`,
+          },
+        ],
+        max_tokens: 3000,
+        temperature: 0.3,
+      })
+    );
+
+    const report = reportResponse.choices[0].message.content ?? "";
+    console.log("[Agent] Informe OpenRouter generado, chars:", report.length);
+
+    // ── FASE 3: PDFs + SHA-256 + Supabase ──────────────────────────────────
+    await Promise.all(
+      searchedSources.map(async (src) => {
+        if (isPdfUrl(src.url)) {
+          const pdf = await extractPdf(src.url);
+          if (pdf) {
+            src.content = pdf.content;
+            src.isPdf = true;
+            src.pages = pdf.pages;
+            src.sizeBytes = pdf.sizeBytes;
+            console.log(`[Agent] PDF: ${src.url} (${pdf.pages}p)`);
+          }
+        }
+      })
+    );
+
+    const sources: AgentSource[] = searchedSources.map((s) => ({
+      ...s,
+      sha256: sha256(s.content || s.url),
+    }));
+
+    let investigationId: string | undefined;
+    try {
+      const { data: inv } = await supabase
+        .from("investigations")
+        .insert({ project_name: project, report, steps })
+        .select("id")
+        .single();
+
+      if (inv?.id) {
+        investigationId = inv.id;
+        const docs = sources.map((s) => ({
+          investigation_id: inv.id,
+          url: s.url,
+          title: s.title,
+          content: s.content,
+          sha256: s.sha256,
+          is_pdf: s.isPdf ?? false,
+          pdf_pages: s.pages ?? null,
+          pdf_size_bytes: s.sizeBytes ?? null,
+        }));
+        const { data: savedDocs } = await supabase.from("documents").insert(docs).select("id, url");
+        if (savedDocs) {
+          for (const src of sources) {
+            const match = savedDocs.find((d) => d.url === src.url);
+            if (match) src.docId = match.id;
+          }
+        }
+      }
+    } catch (dbErr) {
+      console.error("[Agent] Supabase error (no crítico):", dbErr);
+    }
+
+    return NextResponse.json({ report, steps, sources, investigationId });
   } catch (error) {
     console.error("[Agent] Error fatal:", error);
+    const msg = String(error);
+    if (msg.includes("tokens per day") || msg.includes("TPD")) {
+      const waitMatch = msg.match(/try again in (.+?)\./);
+      const wait = waitMatch ? waitMatch[1] : "unos minutos";
+      return NextResponse.json(
+        { error: `Límite diario de Groq alcanzado. Intenta de nuevo en ${wait}.` },
+        { status: 429 }
+      );
+    }
     return NextResponse.json({ error: `Error interno: ${error}` }, { status: 500 });
   }
 }

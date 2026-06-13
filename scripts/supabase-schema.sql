@@ -24,6 +24,22 @@ CREATE TABLE documents (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
+-- Datos estructurados extraídos del informe (contratos, proveedores, pagos, anomalías)
+CREATE TABLE investigation_structured (
+  id               UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  investigation_id UUID REFERENCES investigations(id) ON DELETE CASCADE UNIQUE,
+  project_name     TEXT NOT NULL,
+  project          JSONB,
+  contracts        JSONB DEFAULT '[]'::jsonb,
+  suppliers        JSONB DEFAULT '[]'::jsonb,
+  payments         JSONB DEFAULT '[]'::jsonb,
+  anomalies        JSONB DEFAULT '[]'::jsonb,
+  created_at       TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Índice para ordenar por fecha descendente
+CREATE INDEX idx_investigation_structured_created ON investigation_structured (created_at DESC);
+
 -- Migración para tablas existentes (ejecutar si la tabla ya existe):
 -- ALTER TABLE documents ADD COLUMN IF NOT EXISTS is_pdf BOOLEAN DEFAULT FALSE;
 -- ALTER TABLE documents ADD COLUMN IF NOT EXISTS pdf_pages INTEGER;

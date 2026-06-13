@@ -10,108 +10,101 @@ import {
   ArrowUpRight,
   ArrowDownRight,
 } from "lucide-react";
+import { useInvestigationData } from "@/hooks/useInvestigationData";
 
-interface KPI {
-  title: string;
-  value: string;
-  growth?: string;
-  growthPositive?: boolean;
-  subtext?: string;
-  icon: React.ReactNode;
-  valueColor: string;
-  iconBg: string;
-  iconColor: string;
-  cardBorder: string;
-  cardBg: string;
-  topBarColor: string;
+function fmt(n: number): string {
+  if (n >= 1_000_000) return `$${(n / 1_000_000).toFixed(1)}M`;
+  if (n >= 1_000) return `$${(n / 1_000).toFixed(0)}K`;
+  return `$${n}`;
 }
 
-const kpis: KPI[] = [
-  {
-    title: "Proyectos Monitoreados",
-    value: "124",
-    growth: "+14.2%",
-    growthPositive: true,
-    subtext: "vs trimestre anterior",
-    icon: <FolderOpen className="w-5 h-5" />,
-    valueColor: "text-blue-300",
-    iconBg: "bg-blue-500/20",
-    iconColor: "text-blue-400",
-    cardBorder: "border-blue-500/25",
-    cardBg: "bg-blue-950/40",
-    topBarColor: "bg-blue-500",
-  },
-  {
-    title: "Fondos Públicos Auditados",
-    value: "$38.4M",
-    growth: "+21%",
-    growthPositive: true,
-    subtext: "total monitoreado",
-    icon: <DollarSign className="w-5 h-5" />,
-    valueColor: "text-emerald-300",
-    iconBg: "bg-emerald-500/20",
-    iconColor: "text-emerald-400",
-    cardBorder: "border-emerald-500/25",
-    cardBg: "bg-emerald-950/40",
-    topBarColor: "bg-emerald-500",
-  },
-  {
-    title: "Riesgos de Corrupción",
-    value: "17",
-    growth: "+8%",
-    growthPositive: false,
-    subtext: "investigaciones activas",
-    icon: <ShieldAlert className="w-5 h-5" />,
-    valueColor: "text-orange-300",
-    iconBg: "bg-orange-500/20",
-    iconColor: "text-orange-400",
-    cardBorder: "border-orange-500/25",
-    cardBg: "bg-orange-950/40",
-    topBarColor: "bg-orange-500",
-  },
-  {
-    title: "Alertas Críticas",
-    value: "3",
-    subtext: "acción inmediata requerida",
-    icon: <Bell className="w-5 h-5" />,
-    valueColor: "text-red-300",
-    iconBg: "bg-red-500/20",
-    iconColor: "text-red-400",
-    cardBorder: "border-red-500/30",
-    cardBg: "bg-red-950/40",
-    topBarColor: "bg-red-500",
-  },
-  {
-    title: "Fraude Prevenido",
-    value: "$4.8M",
-    growth: "+32%",
-    growthPositive: true,
-    subtext: "ahorro T1 2024",
-    icon: <TrendingUp className="w-5 h-5" />,
-    valueColor: "text-emerald-300",
-    iconBg: "bg-emerald-500/20",
-    iconColor: "text-emerald-400",
-    cardBorder: "border-emerald-500/25",
-    cardBg: "bg-emerald-950/40",
-    topBarColor: "bg-emerald-400",
-  },
-  {
-    title: "Confianza del Agente",
-    value: "92%",
-    growth: "+2.1%",
-    growthPositive: true,
-    subtext: "precisión de detección",
-    icon: <Cpu className="w-5 h-5" />,
-    valueColor: "text-cyan-300",
-    iconBg: "bg-cyan-500/20",
-    iconColor: "text-cyan-400",
-    cardBorder: "border-cyan-500/25",
-    cardBg: "bg-cyan-950/40",
-    topBarColor: "bg-cyan-500",
-  },
-];
-
 export default function KPICards() {
+  const inv = useInvestigationData();
+
+  const totalImpact = inv?.anomalies?.reduce((s, a) => s + (a.impact ?? 0), 0) ?? 0;
+  const criticalCount = inv?.anomalies?.filter((a) => a.severity === "Critical").length ?? 0;
+
+  const kpis = [
+    {
+      title: "Presupuesto Auditado",
+      value: inv ? fmt(inv.project?.budget ?? 0) : "—",
+      subtext: inv ? inv.projectName.slice(0, 28) : "Sin investigación activa",
+      icon: <FolderOpen className="w-5 h-5" />,
+      valueColor: "text-blue-300",
+      iconBg: "bg-blue-500/20",
+      iconColor: "text-blue-400",
+      cardBorder: "border-blue-500/25",
+      cardBg: "bg-blue-950/40",
+      topBarColor: "bg-blue-500",
+    },
+    {
+      title: "Fondos en Riesgo",
+      value: inv && totalImpact > 0 ? fmt(totalImpact) : "—",
+      subtext: inv ? "impacto acumulado de anomalías" : "Sin investigación activa",
+      icon: <DollarSign className="w-5 h-5" />,
+      valueColor: "text-emerald-300",
+      iconBg: "bg-emerald-500/20",
+      iconColor: "text-emerald-400",
+      cardBorder: "border-emerald-500/25",
+      cardBg: "bg-emerald-950/40",
+      topBarColor: "bg-emerald-500",
+    },
+    {
+      title: "Anomalías Detectadas",
+      value: inv ? String(inv.anomalies?.length ?? 0) : "—",
+      growth: inv && (inv.anomalies?.length ?? 0) > 0 ? `${inv.anomalies.length} hallazgos` : undefined,
+      growthPositive: false,
+      subtext: inv ? "irregularidades encontradas" : "Sin investigación activa",
+      icon: <ShieldAlert className="w-5 h-5" />,
+      valueColor: "text-orange-300",
+      iconBg: "bg-orange-500/20",
+      iconColor: "text-orange-400",
+      cardBorder: "border-orange-500/25",
+      cardBg: "bg-orange-950/40",
+      topBarColor: "bg-orange-500",
+    },
+    {
+      title: "Alertas Críticas",
+      value: inv ? String(criticalCount) : "—",
+      subtext: inv ? "requieren acción inmediata" : "Sin investigación activa",
+      icon: <Bell className="w-5 h-5" />,
+      valueColor: criticalCount > 0 ? "text-red-300" : "text-slate-400",
+      iconBg: "bg-red-500/20",
+      iconColor: "text-red-400",
+      cardBorder: criticalCount > 0 ? "border-red-500/30" : "border-white/8",
+      cardBg: "bg-red-950/40",
+      topBarColor: criticalCount > 0 ? "bg-red-500" : "bg-slate-700",
+    },
+    {
+      title: "Contratos Analizados",
+      value: inv ? String(inv.contracts?.length ?? 0) : "—",
+      subtext: inv ? "contratos identificados" : "Sin investigación activa",
+      icon: <TrendingUp className="w-5 h-5" />,
+      valueColor: "text-emerald-300",
+      iconBg: "bg-emerald-500/20",
+      iconColor: "text-emerald-400",
+      cardBorder: "border-emerald-500/25",
+      cardBg: "bg-emerald-950/40",
+      topBarColor: "bg-emerald-400",
+    },
+    {
+      title: "Nivel de Riesgo",
+      value: inv ? `${inv.project?.risk ?? 0}/100` : "—",
+      subtext: inv ? `estado: ${inv.project?.status ?? "—"}` : "Sin investigación activa",
+      icon: <Cpu className="w-5 h-5" />,
+      valueColor:
+        !inv ? "text-slate-500"
+        : (inv.project?.risk ?? 0) >= 70 ? "text-red-300"
+        : (inv.project?.risk ?? 0) >= 50 ? "text-orange-300"
+        : "text-cyan-300",
+      iconBg: "bg-cyan-500/20",
+      iconColor: "text-cyan-400",
+      cardBorder: "border-cyan-500/25",
+      cardBg: "bg-cyan-950/40",
+      topBarColor: "bg-cyan-500",
+    },
+  ];
+
   return (
     <section>
       <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3">
@@ -121,11 +114,9 @@ export default function KPICards() {
             className={`relative rounded-xl overflow-hidden border ${kpi.cardBorder} ${kpi.cardBg} hover:-translate-y-1 transition-all duration-300 cursor-pointer group`}
             style={{ animationDelay: `${i * 60}ms` }}
           >
-            {/* Top accent bar */}
             <div className={`h-0.5 w-full ${kpi.topBarColor} opacity-70`} />
 
             <div className="p-4">
-              {/* Icon row */}
               <div className="flex items-start justify-between mb-3">
                 <div className={`p-2 rounded-lg ${kpi.iconBg} ${kpi.iconColor}`}>
                   {kpi.icon}
@@ -148,23 +139,19 @@ export default function KPICards() {
                 )}
               </div>
 
-              {/* Value */}
               <p className={`text-2xl font-extrabold ${kpi.valueColor} leading-none mb-1.5`}>
                 {kpi.value}
               </p>
 
-              {/* Title */}
               <p className="text-xs font-semibold text-slate-300 leading-snug mb-0.5">
                 {kpi.title}
               </p>
 
-              {/* Subtext */}
               {kpi.subtext && (
-                <p className="text-[10px] text-slate-500">{kpi.subtext}</p>
+                <p className="text-[10px] text-slate-500 truncate">{kpi.subtext}</p>
               )}
             </div>
 
-            {/* Hover glow */}
             <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none rounded-xl ring-1 ring-inset ${kpi.cardBorder}`} />
           </div>
         ))}

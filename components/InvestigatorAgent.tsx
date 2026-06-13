@@ -16,7 +16,10 @@ import {
   Copy,
   Check,
   FileText,
+  LayoutDashboard,
+  Sparkles,
 } from "lucide-react";
+import { saveInvestigation } from "@/lib/investigation-store";
 
 interface Step {
   type: "search" | "thinking";
@@ -47,6 +50,8 @@ interface StampState {
   explorerUrl?: string;
   error?: string;
 }
+
+type DashboardStatus = "idle" | "extracting" | "done" | "error";
 
 function ReportContent({ content }: { content: string }) {
   const lines = content.split("\n");
@@ -252,6 +257,31 @@ export default function InvestigatorAgent() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<Result | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [dashboardStatus, setDashboardStatus] = useState<DashboardStatus>("idle");
+
+  const extractAndSave = async (report: string, projectName: string, investigationId?: string) => {
+    setDashboardStatus("extracting");
+    try {
+      const res = await fetch("/api/extract", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ report, projectName, investigationId }),
+      });
+      const data = await res.json();
+      if (res.ok && data.structured) {
+        saveInvestigation({
+          ...data.structured,
+          projectName,
+          investigatedAt: new Date().toISOString(),
+        });
+        setDashboardStatus("done");
+      } else {
+        setDashboardStatus("error");
+      }
+    } catch {
+      setDashboardStatus("error");
+    }
+  };
 
   const investigate = async (projectName?: string) => {
     const target = (projectName ?? project).trim();
@@ -261,6 +291,7 @@ export default function InvestigatorAgent() {
     setLoading(true);
     setError(null);
     setResult(null);
+    setDashboardStatus("idle");
 
     try {
       const res = await fetch("/api/agent", {
@@ -275,6 +306,7 @@ export default function InvestigatorAgent() {
         setError(data.error ?? "Error en la investigación");
       } else {
         setResult(data);
+        extractAndSave(data.report, target, data.investigationId);
       }
     } catch {
       setError("Error de conexión. Verifica tu red e inténtalo de nuevo.");
@@ -450,9 +482,48 @@ export default function InvestigatorAgent() {
               </div>
             )}
 
+            {/* Dashboard update status */}
+            {dashboardStatus === "extracting" && (
+              <div className="flex items-center gap-2 text-[11px] text-cyan-400 bg-cyan-500/8 border border-cyan-500/15 rounded-lg px-3 py-2">
+                <Loader2 className="w-3.5 h-3.5 animate-spin flex-shrink-0" />
+                <span>Actualizando módulos del dashboard con datos reales...</span>
+              </div>
+            )}
+
+            {dashboardStatus === "done" && (
+              <div className="rounded-lg border border-emerald-500/20 bg-emerald-500/8 p-3 space-y-2">
+                <div className="flex items-center gap-2">
+                  <Sparkles className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
+                  <span className="text-[11px] font-bold text-emerald-400">
+                    Dashboard actualizado con datos reales de la investigación
+                  </span>
+                </div>
+                <p className="text-[10px] text-slate-500">
+                  Contratos, proveedores, pagos y anomalías reflejan ahora los hallazgos de esta investigación.
+                </p>
+                <div className="flex flex-wrap gap-1.5 pt-0.5">
+                  {[
+                    { label: "Contratos", href: "/contracts" },
+                    { label: "Proveedores", href: "/suppliers" },
+                    { label: "Pagos", href: "/payments" },
+                    { label: "Análisis de Riesgo", href: "/risk" },
+                  ].map((link) => (
+                    <a
+                      key={link.href}
+                      href={link.href}
+                      className="flex items-center gap-1 text-[10px] text-emerald-400 hover:text-emerald-300 bg-emerald-500/10 hover:bg-emerald-500/15 border border-emerald-500/20 px-2 py-0.5 rounded-full transition-colors"
+                    >
+                      <LayoutDashboard className="w-2.5 h-2.5" />
+                      {link.label}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {/* Nueva investigación */}
             <button
-              onClick={() => { setResult(null); setProject(""); }}
+              onClick={() => { setResult(null); setProject(""); setDashboardStatus("idle"); }}
               className="w-full text-xs text-slate-500 hover:text-slate-300 transition-colors py-2 border border-white/8 rounded-lg hover:bg-white/5"
             >
               Nueva investigación

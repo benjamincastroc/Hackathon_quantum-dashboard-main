@@ -23,6 +23,7 @@ import {
   LogOut,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useInvestigationData } from "@/hooks/useInvestigationData";
 
 export const navItems = [
   { icon: LayoutDashboard, label: "Tablero",             href: "/" },
@@ -46,8 +47,14 @@ interface SidebarProps {
 export default function Sidebar({ isOpen, onClose }: SidebarProps) {
   const [collapsed, setCollapsed] = useState(false);
   const pathname = usePathname();
+  const inv = useInvestigationData();
 
   const showLabels = !collapsed;
+
+  const criticalCount = inv?.anomalies?.filter((a) => a.severity === "Critical").length ?? 0;
+  const highCount     = inv?.anomalies?.filter((a) => a.severity === "High").length ?? 0;
+  const confidence    = inv ? Math.max(60, 97 - criticalCount * 5 - highCount * 2) : null;
+  const organization  = inv?.project?.agency ?? null;
 
   return (
     <aside
@@ -99,7 +106,9 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
           </span>
           <span className="text-[11px] text-emerald-400 font-medium">Agente Activo</span>
-          <span className="ml-auto text-[10px] text-slate-500">92% conf.</span>
+          <span className="ml-auto text-[10px] text-slate-500">
+            {confidence !== null ? `${confidence}% conf.` : "Sin datos"}
+          </span>
         </div>
       )}
 
@@ -171,7 +180,9 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             <p className="text-[10px] text-slate-600 uppercase tracking-wider font-semibold">
               Organización
             </p>
-            <p className="text-xs text-slate-400 mt-0.5 font-medium">Contraloría Nacional</p>
+            <p className="text-xs text-slate-400 mt-0.5 font-medium truncate">
+              {organization ?? "Sin investigación"}
+            </p>
           </div>
         )}
 
@@ -182,8 +193,8 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           {showLabels && (
             <>
               <div className="min-w-0 text-left">
-                <p className="text-xs font-semibold text-slate-300 truncate">Benjamin Castro Campos</p>
-                <p className="text-[10px] text-slate-500 truncate">Auditor Jefe</p>
+                <p className="text-xs font-semibold text-slate-300 truncate">Administrador</p>
+                <p className="text-[10px] text-slate-500 truncate">Auditor</p>
               </div>
               <LogOut className="w-3.5 h-3.5 text-slate-600 group-hover:text-slate-400 ml-auto flex-shrink-0" />
             </>

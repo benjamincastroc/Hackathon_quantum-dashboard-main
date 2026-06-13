@@ -1,9 +1,70 @@
 "use client";
 
-import { Bot, Zap, CheckCircle2, Activity, Clock, Shield } from "lucide-react";
-import { agentModules } from "@/lib/data";
+import { Bot, Zap, CheckCircle2, Activity, Clock, Shield, AlertTriangle } from "lucide-react";
+import { useInvestigationData } from "@/hooks/useInvestigationData";
+import EmptyInvestigation from "@/components/EmptyInvestigation";
+
+function timeAgo(iso: string): string {
+  const diff = Date.now() - new Date(iso).getTime();
+  const mins = Math.floor(diff / 60000);
+  const hrs  = Math.floor(diff / 3600000);
+  const days = Math.floor(diff / 86400000);
+  if (mins < 1)  return "ahora mismo";
+  if (mins < 60) return `hace ${mins} min`;
+  if (hrs  < 24) return `hace ${hrs} h`;
+  return `hace ${days} días`;
+}
 
 export default function AutonomousAgent() {
+  const inv = useInvestigationData();
+
+  if (!inv) {
+    return (
+      <section className="glass rounded-xl border border-blue-500/10 flex flex-col">
+        <div className="p-5 border-b border-blue-500/10">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-600 to-cyan-600 flex items-center justify-center glow-blue">
+              <Bot className="w-4 h-4 text-white" />
+            </div>
+            <div>
+              <h2 className="text-sm font-bold text-white">Agente de Auditoría Autónomo</h2>
+              <p className="text-[10px] text-slate-500">Sin investigación activa</p>
+            </div>
+          </div>
+        </div>
+        <EmptyInvestigation message="Inicia una investigación para ver el estado y métricas del agente." />
+      </section>
+    );
+  }
+
+  const criticalCount   = inv.anomalies?.filter((a) => a.severity === "Critical").length ?? 0;
+  const highCount       = inv.anomalies?.filter((a) => a.severity === "High").length ?? 0;
+  const contractsCount  = inv.contracts?.length ?? 0;
+  const suppliersCount  = inv.suppliers?.length ?? 0;
+  const anomaliesCount  = inv.anomalies?.length ?? 0;
+
+  // Confianza: baja si hay muchas anomalías críticas
+  const confidence = Math.max(60, 97 - criticalCount * 5 - highCount * 2);
+
+  // Salud del sistema según riesgo del proyecto
+  const health =
+    inv.project.risk >= 70 ? "Crítico" :
+    inv.project.risk >= 50 ? "Alerta" :
+    "Saludable";
+  const healthColor =
+    inv.project.risk >= 70 ? "text-red-400" :
+    inv.project.risk >= 50 ? "text-orange-400" :
+    "text-emerald-400";
+
+  const modules = [
+    { name: "Análisis de Contratos",       active: contractsCount > 0,  count: `${contractsCount} detectados` },
+    { name: "Inteligencia de Proveedores", active: suppliersCount > 0,  count: `${suppliersCount} identificados` },
+    { name: "Detección de Anomalías",      active: anomaliesCount > 0,  count: `${anomaliesCount} encontradas` },
+    { name: "Validación Blockchain",       active: true,                count: "SHA-256 activo" },
+    { name: "Motor de Riesgo",             active: true,                count: `${inv.project.risk}/100` },
+    { name: "Extracción de Evidencias",    active: true,                count: "Tavily + PDF" },
+  ];
+
   return (
     <section className="glass rounded-xl border border-blue-500/10 flex flex-col">
       {/* Header */}
@@ -18,7 +79,7 @@ export default function AutonomousAgent() {
             </div>
             <div>
               <h2 className="text-sm font-bold text-white">Agente de Auditoría Autónomo</h2>
-              <p className="text-[10px] text-slate-500">Monitoreo continuo — activo 24/7</p>
+              <p className="text-[10px] text-slate-500 truncate max-w-[180px]">{inv.projectName}</p>
             </div>
           </div>
           <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20">
@@ -30,28 +91,22 @@ export default function AutonomousAgent() {
           </div>
         </div>
 
-        {/* Key metrics row */}
+        {/* Key metrics */}
         <div className="grid grid-cols-3 gap-3">
           <div className="bg-white/5 rounded-lg p-2.5 text-center">
-            <div className="flex items-center justify-center gap-1 mb-1">
-              <Clock className="w-3 h-3 text-slate-500" />
-            </div>
-            <p className="text-xs font-bold text-white">hace 2 min</p>
+            <Clock className="w-3 h-3 text-slate-500 mx-auto mb-1" />
+            <p className="text-xs font-bold text-white">{timeAgo(inv.investigatedAt)}</p>
             <p className="text-[10px] text-slate-500">Último Análisis</p>
           </div>
           <div className="bg-white/5 rounded-lg p-2.5 text-center">
-            <div className="flex items-center justify-center gap-1 mb-1">
-              <Zap className="w-3 h-3 text-cyan-400" />
-            </div>
-            <p className="text-xs font-bold text-cyan-400">92%</p>
+            <Zap className="w-3 h-3 text-cyan-400 mx-auto mb-1" />
+            <p className="text-xs font-bold text-cyan-400">{confidence}%</p>
             <p className="text-[10px] text-slate-500">Confianza</p>
           </div>
           <div className="bg-white/5 rounded-lg p-2.5 text-center">
-            <div className="flex items-center justify-center gap-1 mb-1">
-              <Shield className="w-3 h-3 text-emerald-400" />
-            </div>
-            <p className="text-xs font-bold text-emerald-400">Saludable</p>
-            <p className="text-[10px] text-slate-500">Salud del Sistema</p>
+            <Shield className={`w-3 h-3 mx-auto mb-1 ${healthColor}`} />
+            <p className={`text-xs font-bold ${healthColor}`}>{health}</p>
+            <p className="text-[10px] text-slate-500">Estado</p>
           </div>
         </div>
       </div>
@@ -62,28 +117,27 @@ export default function AutonomousAgent() {
           Módulos Activos
         </p>
         <div className="space-y-2.5">
-          {agentModules.map((module, i) => (
+          {modules.map((module, i) => (
             <div
               key={module.name}
               className="flex items-center gap-3 animate-enter"
               style={{ animationDelay: `${i * 50}ms` }}
             >
-              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
+              {module.active
+                ? <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
+                : <AlertTriangle className="w-3.5 h-3.5 text-slate-600 flex-shrink-0" />}
               <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between mb-1">
                   <span className="text-xs text-slate-300 truncate">{module.name}</span>
-                  <span className="text-[10px] text-emerald-400 font-semibold ml-2">{module.health}%</span>
+                  <span className="text-[10px] text-slate-500 ml-2 flex-shrink-0">{module.count}</span>
                 </div>
                 <div className="h-1 bg-white/10 rounded-full overflow-hidden">
                   <div
-                    className="h-full rounded-full bg-gradient-to-r from-emerald-600 to-emerald-400 transition-all duration-500"
-                    style={{ width: `${module.health}%` }}
+                    className={`h-full rounded-full transition-all duration-500 ${module.active ? "bg-gradient-to-r from-emerald-600 to-emerald-400" : "bg-slate-700"}`}
+                    style={{ width: module.active ? "100%" : "0%" }}
                   />
                 </div>
               </div>
-              <span className="text-[10px] font-medium text-emerald-500 flex-shrink-0 bg-emerald-500/10 px-1.5 py-0.5 rounded">
-                {module.status}
-              </span>
             </div>
           ))}
         </div>
@@ -94,9 +148,9 @@ export default function AutonomousAgent() {
         <div className="bg-gradient-to-r from-blue-500/10 to-cyan-500/10 border border-blue-500/20 rounded-lg p-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Activity className="w-3.5 h-3.5 text-blue-400" />
-            <span className="text-xs text-slate-400">Auditorías completadas hoy</span>
+            <span className="text-xs text-slate-400">Hallazgos de la investigación</span>
           </div>
-          <span className="text-sm font-bold text-blue-400">2,666</span>
+          <span className="text-sm font-bold text-blue-400">{anomaliesCount} anomalías</span>
         </div>
       </div>
     </section>

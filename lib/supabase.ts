@@ -25,3 +25,15 @@ export interface DbDocument {
   stamped_at: string | null;
   created_at: string;
 }
+
+export interface DbInvestigationStructured {
+  id: string;
+  investigation_id: string;
+  project_name: string;
+  project: unknown;
+  contracts: unknown;
+  suppliers: unknown;
+  payments: unknown;
+  anomalies: unknown;
+  created_at: string;
+}
