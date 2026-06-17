@@ -271,6 +271,7 @@ export default function InvestigatorAgent() {
       if (res.ok && data.structured) {
         saveInvestigation({
           ...data.structured,
+          projects: data.structured.projects ?? (data.structured.project ? [data.structured.project] : []),
           projectName,
           investigatedAt: new Date().toISOString(),
         });

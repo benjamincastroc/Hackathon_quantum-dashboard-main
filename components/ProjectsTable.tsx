@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ChevronUp, ChevronDown, ExternalLink, Search, Sparkles } from "lucide-react";
 import { formatCurrency, getRiskBadge, getStatusStyles, getStatusDot } from "@/lib/utils";
 import { useInvestigationData } from "@/hooks/useInvestigationData";
 import EmptyInvestigation from "@/components/EmptyInvestigation";
 import type { ProjectStatus } from "@/lib/data";
+import type { InvProject } from "@/lib/investigation-store";
 
 type SortKey = "name" | "budget" | "executed" | "progress" | "risk";
 
@@ -22,25 +23,30 @@ export default function ProjectsTable() {
   const [sortKey, setSortKey] = useState<SortKey>("risk");
   const [sortDir, setSortDir] = useState<"asc" | "desc">("desc");
   const [statusFilter, setStatusFilter] = useState<ProjectStatus | "All">("All");
+  const [allProjects, setAllProjects] = useState<InvProject[]>([]);
 
   const inv = useInvestigationData();
 
-  const projects = inv?.project
-    ? [
-        {
-          id: 0,
-          name: inv.project.name,
-          agency: inv.project.agency,
-          budget: inv.project.budget,
-          executed: inv.project.executed,
-          progress: inv.project.progress,
-          risk: inv.project.risk,
-          status: inv.project.status,
-          contractor: inv.project.contractor,
-          location: inv.project.location,
-        },
-      ]
+  // Carga el historial completo de proyectos investigados desde Supabase
+  useEffect(() => {
+    fetch("/api/investigations/all")
+      .then((r) => r.json())
+      .then(({ data }: { data: Array<{ project: InvProject }> }) => {
+        if (data?.length) setAllProjects(data.map((d) => d.project));
+      })
+      .catch(() => {});
+  }, [inv]); // recarga cuando llega una nueva investigación
+
+  // Combina historial de Supabase con datos locales (sin duplicados por nombre)
+  const mergedProjects: InvProject[] = allProjects.length
+    ? allProjects
+    : inv?.projects?.length
+    ? inv.projects
+    : inv?.project
+    ? [inv.project]
     : [];
+
+  const projects = mergedProjects.map((p, i) => ({ id: i, ...p }));
 
   const handleSort = (key: SortKey) => {
     if (sortKey === key) setSortDir(sortDir === "asc" ? "desc" : "asc");
@@ -73,11 +79,11 @@ export default function ProjectsTable() {
               {inv && (
                 <span className="flex items-center gap-1 text-[10px] font-semibold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full">
                   <Sparkles className="w-2.5 h-2.5" />
-                  {inv.projectName}
+                  {allProjects.length > 1 ? `${allProjects.length} investigaciones` : inv.projectName}
                 </span>
               )}
             </div>
-            <p className="text-xs text-slate-500 mt-0.5">{filtered.length} proyectos mostrados</p>
+            <p className="text-xs text-slate-500 mt-0.5">{filtered.length} proyecto{filtered.length !== 1 ? "s" : ""} monitoreado{filtered.length !== 1 ? "s" : ""}</p>
           </div>
           <div className="relative">
             <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-500" />

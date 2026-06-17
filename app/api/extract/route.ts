@@ -11,17 +11,19 @@ const SYSTEM = `Eres un extractor de datos estructurados para auditoría guberna
 
 Responde ÚNICAMENTE con un objeto JSON válido (sin markdown, sin texto adicional):
 {
-  "project": {
-    "name": "string",
-    "agency": "string",
-    "budget": 0,
-    "executed": 0,
-    "progress": 0,
-    "risk": 0,
-    "status": "Critical",
-    "contractor": "string",
-    "location": "string"
-  },
+  "projects": [
+    {
+      "name": "string",
+      "agency": "string",
+      "budget": 0,
+      "executed": 0,
+      "progress": 0,
+      "risk": 0,
+      "status": "Critical",
+      "contractor": "string",
+      "location": "string"
+    }
+  ],
   "contracts": [
     {"id":"CON-001","title":"string","vendor":"string","value":"$0M","status":"Flagged","risk":"high"}
   ],
@@ -37,6 +39,7 @@ Responde ÚNICAMENTE con un objeto JSON válido (sin markdown, sin texto adicion
 }
 
 Reglas:
+- projects: lista TODOS los proyectos gubernamentales mencionados en el informe, NO solo el principal
 - budget/impact: número entero (monto en soles o USD sin símbolo)
 - executed/progress: porcentaje 0-100 (sin símbolo %)
 - risk: entero 0-100 según nivel de riesgo
@@ -81,7 +84,21 @@ export async function POST(req: NextRequest) {
     }
 
     const structured = JSON.parse(match[0]);
-    console.log("[Extract] OK — contratos:", structured.contracts?.length, "proveedores:", structured.suppliers?.length);
+
+    // Normalizar: si el LLM devuelve "project" singular en lugar de "projects" array, convertirlo
+    if (!structured.projects && structured.project) {
+      structured.projects = [structured.project];
+    }
+    if (!structured.projects || structured.projects.length === 0) {
+      structured.projects = [];
+    }
+    // project singular = el de mayor riesgo (para compatibilidad con otros paneles)
+    structured.project = structured.projects.reduce(
+      (max: typeof structured.projects[0], p: typeof structured.projects[0]) => (p.risk > (max?.risk ?? 0) ? p : max),
+      structured.projects[0] ?? null
+    );
+
+    console.log("[Extract] OK — proyectos:", structured.projects.length, "contratos:", structured.contracts?.length, "proveedores:", structured.suppliers?.length);
 
     // Persistir en Supabase si hay investigationId
     if (investigationId) {
@@ -90,6 +107,7 @@ export async function POST(req: NextRequest) {
           investigation_id: investigationId,
           project_name: projectName,
           project: structured.project ?? null,
+          projects: structured.projects ?? [],
           contracts: structured.contracts ?? [],
           suppliers: structured.suppliers ?? [],
           payments: structured.payments ?? [],
@@ -99,7 +117,6 @@ export async function POST(req: NextRequest) {
       );
       if (dbErr) {
         console.error("[Extract] Supabase error:", dbErr.code, dbErr.message);
-        // Tabla no existe → avisar claramente
         if (dbErr.code === "42P01") {
           console.error("[Extract] La tabla 'investigation_structured' no existe. Ejecuta el script supabase-schema.sql");
         }

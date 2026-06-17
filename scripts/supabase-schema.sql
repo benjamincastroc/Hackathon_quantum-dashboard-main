@@ -30,6 +30,7 @@ CREATE TABLE investigation_structured (
   investigation_id UUID REFERENCES investigations(id) ON DELETE CASCADE UNIQUE,
   project_name     TEXT NOT NULL,
   project          JSONB,
+  projects         JSONB DEFAULT '[]'::jsonb,
   contracts        JSONB DEFAULT '[]'::jsonb,
   suppliers        JSONB DEFAULT '[]'::jsonb,
   payments         JSONB DEFAULT '[]'::jsonb,
@@ -44,3 +45,4 @@ CREATE INDEX idx_investigation_structured_created ON investigation_structured (c
 -- ALTER TABLE documents ADD COLUMN IF NOT EXISTS is_pdf BOOLEAN DEFAULT FALSE;
 -- ALTER TABLE documents ADD COLUMN IF NOT EXISTS pdf_pages INTEGER;
 -- ALTER TABLE documents ADD COLUMN IF NOT EXISTS pdf_size_bytes BIGINT;
+-- ALTER TABLE investigation_structured ADD COLUMN IF NOT EXISTS projects JSONB DEFAULT '[]'::jsonb;

@@ -52,6 +52,7 @@ export interface InvestigationData {
   projectName: string;
   investigatedAt: string;
   project: InvProject;
+  projects?: InvProject[];
   contracts: InvContract[];
   suppliers: InvSupplier[];
   payments: InvPayment[];

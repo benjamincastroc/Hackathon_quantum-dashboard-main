@@ -15,10 +15,12 @@ export async function GET() {
       return NextResponse.json({ data: null });
     }
 
+    const rawProjects = (data.projects as InvestigationData["projects"]) ?? [];
     const inv: InvestigationData = {
       projectName: data.project_name,
       investigatedAt: data.created_at,
       project: data.project as InvestigationData["project"],
+      projects: rawProjects.length ? rawProjects : (data.project ? [data.project as InvestigationData["project"]] : []),
       contracts: (data.contracts as InvestigationData["contracts"]) ?? [],
       suppliers: (data.suppliers as InvestigationData["suppliers"]) ?? [],
       payments: (data.payments as InvestigationData["payments"]) ?? [],
