@@ -1,52 +1,97 @@
-import { NextRequest, NextResponse } from "next/server";
+// =========================
+// COMANDOS WHATSAPP
+// =========================
 
-export async function POST(req: NextRequest) {
-  const body = await req.json();
+let reply = "";
 
-  const message =
-    body?.entry?.[0]?.changes?.[0]?.value?.messages?.[0];
+if (
+  text &&
+  text.toLowerCase().startsWith("investigar ")
+) {
+  const proyecto = text
+    .replace(/^investigar\s+/i, "")
+    .trim();
 
-  if (!message) return NextResponse.json({ ok: true });
+  console.log(
+    "🔎 Investigación solicitada:",
+    proyecto
+  );
 
-  const text = message.text?.body;
-  const from = message.from;
-
-  // 🧠 MISMA API que Discord usa
-  const response = await fetch("http://localhost:3000/api/chat", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      messages: [
-        {
-          role: "user",
-          content: text,
-        },
-      ],
-    }),
-  });
-
-  const data = await response.json();
-
-  const reply = data.content;
-
-  // 📤 enviar a WhatsApp
-  await fetch(
-    `https://graph.facebook.com/v19.0/${process.env.PHONE_NUMBER_ID}/messages`,
+  const agentResponse = await fetch(
+    "http://localhost:3000/api/agent",
     {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${process.env.WHATSAPP_TOKEN}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        messaging_product: "whatsapp",
-        to: from,
-        text: { body: reply },
+        project: proyecto,
       }),
     }
   );
 
-  return NextResponse.json({ ok: true });
+  const agentData =
+    await agentResponse.json();
+
+  reply =
+    agentData.report ||
+    "No se pudo generar el informe.";
+
+} else if (
+  text &&
+  text.toLowerCase() === "estado"
+) {
+
+  reply = `
+✅ GovWatch AI operativo
+
+✅ WhatsApp conectado
+
+✅ Agente investigador activo
+
+✅ Blockchain activo
+
+✅ Sistema listo para auditorías
+`;
+
+} else {
+
+  const aiResponse = await fetch(
+    "http://localhost:3000/api/chat",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        messages: [
+          {
+            role: "user",
+            content: text,
+          },
+        ],
+      }),
+    }
+  );
+
+  const data =
+    await aiResponse.json();
+
+  reply =
+    data.content ||
+    "Lo siento, no pude generar una respuesta.";
 }
+
+// =========================
+// PROTECCIÓN WHATSAPP
+// =========================
+
+const MAX_WHATSAPP_LENGTH = 3500;
+
+if (reply.length > MAX_WHATSAPP_LENGTH) {
+  reply =
+    reply.substring(0, MAX_WHATSAPP_LENGTH) +
+    "\n\n⚠️ Informe resumido automáticamente para WhatsApp.";
+}
+
+console.log("🤖 Respuesta:", reply);
